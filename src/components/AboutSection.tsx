@@ -1,11 +1,8 @@
-import { User } from "lucide-react";
-
 const AboutSection = () => {
-  return (
-    <section id="about" className="min-h-screen flex items-center justify-center p-8">
+  return <section id="about" className="min-h-screen flex items-center justify-center p-8">
       <div className="max-w-4xl w-full">
         <div className="flex items-center gap-2 mb-8">
-          <User className="w-6 h-6 text-primary" />
+          
           <h2 className="text-2xl md:text-3xl font-light tracking-wide">About Me</h2>
         </div>
         
@@ -28,8 +25,6 @@ const AboutSection = () => {
           </p>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default AboutSection;
