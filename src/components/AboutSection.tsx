@@ -1,5 +1,5 @@
 const AboutSection = () => {
-  return <section id="about" className="min-h-screen flex items-center justify-center p-8">
+  return <section id="about" className="flex items-center justify-center p-8 py-16">
       <div className="max-w-4xl w-full">
         <div className="flex items-center gap-2 mb-8">
           

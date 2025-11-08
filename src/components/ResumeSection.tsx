@@ -2,7 +2,7 @@ import { FileText, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 const ResumeSection = () => {
   return (
-    <section id="resume" className="min-h-screen flex items-center justify-center p-8">
+    <section id="resume" className="flex items-center justify-center p-8 py-16">
       <div className="max-w-4xl w-full">
         <h2 className="text-2xl md:text-3xl font-light tracking-wide mb-8">Resume</h2>
         

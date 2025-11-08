@@ -18,7 +18,7 @@ const ProjectsSection = () => {
   ];
 
   return (
-    <section id="projects" className="min-h-screen flex items-center justify-center p-8">
+    <section id="projects" className="flex items-center justify-center p-8 py-16">
       <div className="max-w-4xl w-full">
         <h2 className="text-2xl md:text-3xl font-light tracking-wide mb-12">Projects</h2>
         
