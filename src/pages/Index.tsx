@@ -1,7 +1,10 @@
 import VideoBackground from "@/components/VideoBackground";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
+import ExperienceSection from "@/components/ExperienceSection";
+import ProjectsSection from "@/components/ProjectsSection";
 import ResumeSection from "@/components/ResumeSection";
+import SectionDivider from "@/components/SectionDivider";
 import ChatBot from "@/components/ChatBot";
 
 const Index = () => {
@@ -9,7 +12,13 @@ const Index = () => {
     <div className="relative">
       <VideoBackground />
       <HeroSection />
+      <SectionDivider />
       <AboutSection />
+      <SectionDivider />
+      <ExperienceSection />
+      <SectionDivider />
+      <ProjectsSection />
+      <SectionDivider />
       <ResumeSection />
       <ChatBot />
     </div>

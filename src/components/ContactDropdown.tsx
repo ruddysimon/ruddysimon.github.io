@@ -20,14 +20,14 @@ const ContactDropdown = () => {
           className="absolute top-full mt-2 right-0 min-w-[200px] rounded-xl bg-card border border-border backdrop-blur-md shadow-lg overflow-hidden z-50 animate-in slide-in-from-top-2"
         >
           <a
-            href="mailto:your.email@example.com"
+            href="mailto:ruddy.simonpour@gmail.com"
             className="flex items-center gap-3 px-4 py-3 hover:bg-secondary transition-colors"
           >
             <Mail className="w-5 h-5 text-primary" />
             <span className="text-sm">Email</span>
           </a>
           <a
-            href="https://linkedin.com/in/yourprofile"
+            href="https://www.linkedin.com/in/ruddysimon/"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-3 px-4 py-3 hover:bg-secondary transition-colors"
