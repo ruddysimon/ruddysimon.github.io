@@ -24,7 +24,7 @@ const VideoBackground = () => {
       >
         <source src="/background-video.mp4" type="video/mp4" />
       </video>
-      <div className="absolute inset-0 bg-background/50 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-background/30" />
       
       <button
         onClick={toggleMute}
