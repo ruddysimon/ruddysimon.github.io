@@ -2,6 +2,7 @@ import VideoBackground from "@/components/VideoBackground";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
 import ResumeSection from "@/components/ResumeSection";
+import ChatBot from "@/components/ChatBot";
 
 const Index = () => {
   return (
@@ -10,6 +11,7 @@ const Index = () => {
       <HeroSection />
       <AboutSection />
       <ResumeSection />
+      <ChatBot />
     </div>
   );
 };

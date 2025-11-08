@@ -9,14 +9,9 @@ const HeroSection = () => {
   return (
     <section className="min-h-screen flex flex-col items-center justify-center p-8 relative">
       <div className="max-w-4xl w-full text-center space-y-8">
-        <div className="space-y-4">
-          <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent animate-in fade-in slide-in-from-bottom-4 duration-1000">
-            Data Scientist
-          </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
-            Transforming Data into Insights
-          </p>
-        </div>
+        <h1 className="text-4xl md:text-6xl font-light tracking-tight text-foreground animate-in fade-in slide-in-from-bottom-4 duration-1000">
+          Data Scientist
+        </h1>
         
         <div className="flex flex-wrap items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
           <ContactDropdown />
