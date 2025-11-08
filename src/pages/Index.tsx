@@ -1,4 +1,5 @@
 import VideoBackground from "@/components/VideoBackground";
+import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
 import ExperienceSection from "@/components/ExperienceSection";
@@ -11,6 +12,7 @@ const Index = () => {
   return (
     <div className="relative">
       <VideoBackground />
+      <Header />
       <HeroSection />
       <SectionDivider />
       <AboutSection />
