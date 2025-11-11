@@ -1,43 +1,133 @@
-import ContactDropdown from "./ContactDropdown";
+import { Mail, Linkedin, Github, FileText } from "lucide-react";
+import { useHeaderFade } from "@/hooks/use-viewport-fade";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const Header = () => {
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    element?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const headerOpacity = useHeaderFade();
 
   const handleResumeClick = () => {
-    window.open('/resume.pdf', '_blank');
+    window.open('/Ruddy-Simonpour-Resume.pdf', '_blank');
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 p-6">
+    <header className="fixed top-0 left-0 right-0 z-50 p-6 transition-opacity duration-300" style={{ opacity: headerOpacity }}>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-light tracking-tight text-foreground">
+          <h1 className="text-2xl font-medium tracking-tight" style={{ color: 'hsl(45, 25%, 95%)' }}>
             Data Scientist
           </h1>
-          <p className="text-sm font-light text-muted-foreground mt-1">
+          <p className="text-sm font-normal mt-1" style={{ color: 'hsl(45, 30%, 85%)' }}>
             Ruddy Simonpour
           </p>
         </div>
         
         <nav className="flex items-center gap-6">
-          <ContactDropdown />
+          {/* Social Links */}
+          <div className="flex items-center gap-4">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <a
+                  href="https://www.linkedin.com/in/ruddysimon/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 transition-colors"
+                  style={{ color: 'hsl(45, 25%, 95%)' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = 'hsl(180, 50%, 60%)'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = 'hsl(45, 25%, 95%)'}
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin className="w-5 h-5" />
+                </a>
+              </TooltipTrigger>
+              <TooltipContent 
+                side="bottom"
+                style={{ 
+                  backgroundColor: 'hsl(180, 45%, 45%)',
+                  color: 'hsl(45, 25%, 95%)',
+                  borderColor: 'hsl(180, 50%, 60%)'
+                }}
+              >
+                <p>LinkedIn</p>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <a
+                  href="https://github.com/ruddysimon"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 transition-colors"
+                  style={{ color: 'hsl(45, 25%, 95%)' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = 'hsl(180, 50%, 60%)'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = 'hsl(45, 25%, 95%)'}
+                  aria-label="GitHub"
+                >
+                  <Github className="w-5 h-5" />
+                </a>
+              </TooltipTrigger>
+              <TooltipContent 
+                side="bottom"
+                style={{ 
+                  backgroundColor: 'hsl(180, 45%, 45%)',
+                  color: 'hsl(45, 25%, 95%)',
+                  borderColor: 'hsl(180, 50%, 60%)'
+                }}
+              >
+                <p>GitHub</p>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <a
+                  href="mailto:ruddy.simonpour@gmail.com"
+                  className="p-2 transition-colors"
+                  style={{ color: 'hsl(45, 25%, 95%)' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = 'hsl(180, 50%, 60%)'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = 'hsl(45, 25%, 95%)'}
+                  aria-label="Email"
+                >
+                  <Mail className="w-5 h-5" />
+                </a>
+              </TooltipTrigger>
+              <TooltipContent 
+                side="bottom"
+                style={{ 
+                  backgroundColor: 'hsl(180, 45%, 45%)',
+                  color: 'hsl(45, 25%, 95%)',
+                  borderColor: 'hsl(180, 50%, 60%)'
+                }}
+              >
+                <p>Email</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
           
-          <button
-            onClick={handleResumeClick}
-            className="px-4 py-2 text-sm font-light hover:text-primary transition-colors"
-          >
-            Resume
-          </button>
-          
-          <button
-            onClick={() => scrollToSection('about')}
-            className="px-4 py-2 text-sm font-light hover:text-primary transition-colors"
-          >
-            About Me
-          </button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                onClick={handleResumeClick}
+                className="p-2 transition-colors"
+                style={{ color: 'hsl(45, 25%, 95%)' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = 'hsl(180, 50%, 60%)'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'hsl(45, 25%, 95%)'}
+                aria-label="Resume"
+              >
+                <FileText className="w-5 h-5" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent 
+              side="bottom"
+              style={{ 
+                backgroundColor: 'hsl(180, 45%, 45%)',
+                color: 'hsl(45, 25%, 95%)',
+                borderColor: 'hsl(180, 50%, 60%)'
+              }}
+            >
+              <p>Resume</p>
+            </TooltipContent>
+          </Tooltip>
         </nav>
       </div>
     </header>

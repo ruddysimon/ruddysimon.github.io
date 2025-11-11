@@ -12,7 +12,7 @@ const ResumeSection = () => {
           </p>
           
           <Button asChild variant="default" size="lg" className="gap-2">
-            <a href="/resume.pdf" download>
+            <a href="/Ruddy-Simonpour-Resume.pdf" download>
               <Download className="w-5 h-5" />
               Download Resume
             </a>
