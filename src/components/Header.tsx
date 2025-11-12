@@ -1,16 +1,23 @@
 import { Mail, Linkedin, Github, FileText } from "lucide-react";
-import { useHeaderFade } from "@/hooks/use-viewport-fade";
+import { useHeaderFade, useHeaderHide } from "@/hooks/use-viewport-fade";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const Header = () => {
   const headerOpacity = useHeaderFade();
+  const isHidden = useHeaderHide();
 
   const handleResumeClick = () => {
     window.open('/Ruddy-Simonpour-Resume.pdf', '_blank');
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 p-6 transition-opacity duration-300" style={{ opacity: headerOpacity }}>
+    <header 
+      className="fixed top-0 left-0 right-0 z-50 p-6 transition-all duration-500 ease-in-out" 
+      style={{ 
+        opacity: headerOpacity,
+        transform: isHidden ? 'translateY(-100%)' : 'translateY(0)'
+      }}
+    >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-medium tracking-tight" style={{ color: 'hsl(45, 25%, 95%)' }}>

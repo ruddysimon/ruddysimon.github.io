@@ -23,9 +23,9 @@ const ProjectsSection = () => {
               key={index} 
               className="group p-8 rounded-xl backdrop-blur-2xl border transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl"
               style={{ 
-                backgroundColor: 'rgba(30, 45, 55, 0.55)',
-                borderColor: 'rgba(80, 160, 180, 0.4)',
-                boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(100, 180, 200, 0.25) inset'
+                backgroundColor: 'rgba(30, 45, 55, 0.35)',
+                borderColor: 'rgba(80, 160, 180, 0.3)',
+                boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(100, 180, 200, 0.2) inset'
               }}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-5" style={{ color: 'hsl(180, 60%, 68%)' }}>

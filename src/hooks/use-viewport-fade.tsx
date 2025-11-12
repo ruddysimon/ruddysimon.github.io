@@ -91,3 +91,33 @@ export function useViewportFade<T extends HTMLElement = HTMLElement>() {
   return { ref: elementRef, opacity };
 }
 
+// Hook for header hide/show based on About section visibility
+export function useHeaderHide() {
+  const [isHidden, setIsHidden] = useState(false);
+
+  useEffect(() => {
+    const checkAboutSection = () => {
+      const aboutSection = document.getElementById('about');
+      if (!aboutSection) return;
+
+      const rect = aboutSection.getBoundingClientRect();
+      // Hide header when About section reaches the top of viewport
+      // Using a small threshold (50px) for smoother transition
+      setIsHidden(rect.top <= 50);
+    };
+
+    window.addEventListener("scroll", checkAboutSection, { passive: true });
+    window.addEventListener("resize", checkAboutSection);
+    
+    // Initial check
+    checkAboutSection();
+
+    return () => {
+      window.removeEventListener("scroll", checkAboutSection);
+      window.removeEventListener("resize", checkAboutSection);
+    };
+  }, []);
+
+  return isHidden;
+}
+
