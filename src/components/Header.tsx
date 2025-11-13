@@ -1,4 +1,5 @@
-import { Mail, Linkedin, Github, FileText } from "lucide-react";
+import { Mail, Linkedin, Github, FileText, Book } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useHeaderFade, useHeaderHide } from "@/hooks/use-viewport-fade";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -19,14 +20,16 @@ const Header = () => {
       }}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-medium tracking-tight" style={{ color: 'hsl(45, 25%, 95%)' }}>
+        <Link to="/" className="cursor-pointer">
+          <h1 className="text-2xl font-medium tracking-tight transition-colors" style={{ color: 'hsl(45, 25%, 95%)' }}
+              onMouseEnter={(e) => e.currentTarget.style.color = 'hsl(180, 50%, 60%)'}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'hsl(45, 25%, 95%)'}>
             Data Scientist
           </h1>
           <p className="text-sm font-normal mt-1" style={{ color: 'hsl(45, 30%, 85%)' }}>
             Ruddy Simonpour
           </p>
-        </div>
+        </Link>
         
         <nav className="flex items-center gap-6">
           {/* Social Links */}
@@ -110,6 +113,31 @@ const Header = () => {
               </TooltipContent>
             </Tooltip>
           </div>
+          
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                to="/books"
+                className="p-2 transition-colors"
+                style={{ color: 'hsl(45, 25%, 95%)' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = 'hsl(180, 50%, 60%)'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'hsl(45, 25%, 95%)'}
+                aria-label="Books"
+              >
+                <Book className="w-5 h-5" />
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent 
+              side="bottom"
+              style={{ 
+                backgroundColor: 'hsl(180, 45%, 45%)',
+                color: 'hsl(45, 25%, 95%)',
+                borderColor: 'hsl(180, 50%, 60%)'
+              }}
+            >
+              <p>Books</p>
+            </TooltipContent>
+          </Tooltip>
           
           <Tooltip>
             <TooltipTrigger asChild>

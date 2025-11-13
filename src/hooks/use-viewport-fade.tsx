@@ -51,21 +51,29 @@ export function useViewportFade<T extends HTMLElement = HTMLElement>() {
       const elementCenter = rect.top + rect.height / 2;
       const distanceFromCenter = Math.abs(elementCenter - viewportCenter);
       
-      // Fade distance: start fading when more than 200px from center
-      // Full fade at 600px from center
-      const fadeStartDistance = 200;
-      const fadeEndDistance = 600;
+      // Check if element is in the visible viewport area (top to bottom)
+      const isInViewport = rect.bottom > 0 && rect.top < viewportHeight;
+      
+      // If element is near the center (within 300px) or at the top of viewport, keep it fully visible
+      // Only fade when element is far from center AND not at the top
+      const nearCenterThreshold = 300;
+      const fadeStartDistance = 400;
+      const fadeEndDistance = 800;
       
       let calculatedOpacity = 1;
       
-      if (distanceFromCenter > fadeStartDistance) {
+      // If element is near center or at top of viewport, keep it fully visible
+      if (distanceFromCenter < nearCenterThreshold || (rect.top >= 0 && rect.top < viewportHeight * 0.3)) {
+        calculatedOpacity = 1;
+      } else if (distanceFromCenter > fadeStartDistance) {
+        // Only fade when far from center
         const fadeRange = fadeEndDistance - fadeStartDistance;
         const fadeAmount = Math.min((distanceFromCenter - fadeStartDistance) / fadeRange, 1);
-        // Fade from 1.0 to 0.4 (more noticeable fade)
-        calculatedOpacity = 1 - fadeAmount * 0.6;
+        // Fade from 1.0 to 0.5 (less aggressive fade)
+        calculatedOpacity = 1 - fadeAmount * 0.5;
       }
 
-      setOpacity(Math.max(calculatedOpacity, 0.4)); // Minimum opacity of 0.4
+      setOpacity(Math.max(calculatedOpacity, 0.5)); // Minimum opacity of 0.5
     };
 
     const handleScroll = () => {
@@ -91,30 +99,45 @@ export function useViewportFade<T extends HTMLElement = HTMLElement>() {
   return { ref: elementRef, opacity };
 }
 
-// Hook for header hide/show based on About section visibility
+// Hook for header hide/show based on scroll position or section visibility
 export function useHeaderHide() {
   const [isHidden, setIsHidden] = useState(false);
 
   useEffect(() => {
-    const checkAboutSection = () => {
-      const aboutSection = document.getElementById('about');
-      if (!aboutSection) return;
+    const checkScrollPosition = () => {
+      // Always show header at the absolute top
+      if (window.scrollY === 0) {
+        setIsHidden(false);
+        return;
+      }
 
-      const rect = aboutSection.getBoundingClientRect();
-      // Hide header when About section reaches the top of viewport
-      // Using a small threshold (50px) for smoother transition
-      setIsHidden(rect.top <= 50);
+      // Check for specific sections first (about, books, etc.)
+      const aboutSection = document.getElementById('about');
+      const booksSection = document.getElementById('books');
+      
+      // If we have a section to track, use it
+      const sectionToTrack = aboutSection || booksSection;
+      
+      if (sectionToTrack) {
+        const rect = sectionToTrack.getBoundingClientRect();
+        // Hide header when section reaches the top of viewport
+        // Using a small threshold (50px) for smoother transition
+        setIsHidden(rect.top <= 50);
+      } else {
+        // Fallback: hide header when scrolling down past 200px
+        setIsHidden(window.scrollY > 200);
+      }
     };
 
-    window.addEventListener("scroll", checkAboutSection, { passive: true });
-    window.addEventListener("resize", checkAboutSection);
+    window.addEventListener("scroll", checkScrollPosition, { passive: true });
+    window.addEventListener("resize", checkScrollPosition);
     
     // Initial check
-    checkAboutSection();
+    checkScrollPosition();
 
     return () => {
-      window.removeEventListener("scroll", checkAboutSection);
-      window.removeEventListener("resize", checkAboutSection);
+      window.removeEventListener("scroll", checkScrollPosition);
+      window.removeEventListener("resize", checkScrollPosition);
     };
   }, []);
 
