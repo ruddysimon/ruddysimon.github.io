@@ -12,15 +12,11 @@ const AboutSection = () => {
         
         <div className="space-y-4">
           <p className="text-sm md:text-base leading-relaxed font-normal" style={{ color: 'hsl(45, 30%, 85%)' }}>
-            My name is Ruddy Simonpour, and I'm currently working as a Data Scientist at Rivo Holdings. I design, train, and deploy machine learning models. My work spans model development, API integration, and end-to-end automation — from data pipelines to production environments.
+            My name is Ruddy Simonpour, and I am a Data Scientist at Rivo Holdings. I design, train, and deploy supervised machine learning systems that support lending decisions and financial services. My work covers every stage of model development, including data engineering, feature design, model training and evaluation, API integration, and production deployment. I build automated pipelines, centralized services, and scalable backend architectures that connect machine learning models to real business workflows.
           </p>
           
           <p className="text-sm md:text-base leading-relaxed font-normal" style={{ color: 'hsl(45, 30%, 85%)' }}>
             I earned my Bachelor's degree in Mechanical Engineering from Azad University (IAU) in Iran, and later completed my Master's in Data Science at the University of San Diego.
-          </p>
-          
-          <p className="text-sm md:text-base leading-relaxed font-normal" style={{ color: 'hsl(45, 30%, 85%)' }}>
-            During my internship with the City of Palo Alto, I helped the team develop AI-driven agentic systems using LangChain and LlamaIndex to automate and optimize internal workflows. That experience sparked my deeper interest in AI infrastructure and how intelligent systems can streamline complex operations.
           </p>
           
           <p className="text-sm md:text-base leading-relaxed font-normal" style={{ color: 'hsl(45, 30%, 85%)' }}>

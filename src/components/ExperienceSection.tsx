@@ -10,7 +10,7 @@ const ExperienceSection = () => {
       location: "San Diego, CA",
       period: "Mar 2025 – Present",
       logo: "/rivo.jpeg",
-      description: "I build and deploy machine learning systems that automate decision-making across our platform. Designed a full-stack application (React, Next.js, Flask) with hybrid models (XGBoost, CatBoost, Random Forest) to predict risk and improve accuracy. Used Optuna for tuning and SHAP for interpretability — cutting error rates and making results explainable. Built a real-time ML pipeline that scores applications from AWS S3 and updates our CRM through API calls. I also monitor model performance with Tableau dashboards to keep data drift and misclassifications in check.",
+      description: "I build and deploy machine learning systems that automate decision making across our platform. I designed a full stack application using React, Next.js, and Flask, supported by hybrid models such as XGBoost, CatBoost, and Random Forest to predict risk and improve accuracy. I improved model performance through systematic tuning and added strong interpretability techniques that allow the business to trust and understand predictions. I built a real time machine learning pipeline that evaluates incoming applications and pushes updated risk scores directly into our CRM through API integrations. I maintain ongoing performance oversight through Tableau dashboards that highlight drift, shifts in customer behavior, and any patterns of misclassification, which helps keep the models reliable in production.",
     },
     {
       title: "Data Analyst I",
