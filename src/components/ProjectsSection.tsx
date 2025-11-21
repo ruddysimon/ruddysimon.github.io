@@ -13,30 +13,36 @@ const ProjectsSection = () => {
   return (
     <section ref={ref} id="projects" className="flex items-center justify-center p-8 py-16 transition-opacity duration-300" style={{ opacity }}>
       <div className="max-w-4xl w-full">
-        <h2 className="text-2xl md:text-3xl font-medium tracking-wide mb-12" style={{ color: 'hsl(45, 25%, 95%)' }}>
-          Where My Focus Has Been
-        </h2>
-        
         <div className="space-y-6">
           {focusAreas.map((area, index) => (
-            <div 
-              key={index} 
-              className="group p-8 rounded-xl backdrop-blur-2xl border transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl"
-              style={{ 
-                backgroundColor: 'rgba(30, 45, 55, 0.35)',
-                borderColor: 'rgba(80, 160, 180, 0.3)',
-                boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(100, 180, 200, 0.2) inset'
-              }}
-            >
-              <h3 className="text-xl md:text-2xl font-semibold mb-5" style={{ color: 'hsl(180, 60%, 68%)' }}>
-                {area.title}
-              </h3>
-              <p 
-                className="text-sm md:text-base leading-relaxed font-normal whitespace-pre-line" 
-                style={{ color: 'hsl(45, 20%, 93%)' }}
+            <div key={index} className="relative">
+              {/* Outline border with gradient effect */}
+              <div 
+                className="absolute inset-0 rounded-xl border-2"
+                style={{ 
+                  borderColor: 'hsla(45, 25%, 95%, 0.6)',
+                  boxShadow: '0 0 40px hsla(45, 25%, 95%, 0.35)',
+                }}
+              />
+              
+              {/* Content container */}
+              <div 
+                className="relative p-8 md:p-12 rounded-xl"
+                style={{ 
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                  backdropFilter: 'blur(10px)',
+                }}
               >
-                {area.description}
-              </p>
+                <h3 className="text-xl md:text-2xl font-semibold mb-5" style={{ color: 'hsl(180, 60%, 68%)' }}>
+                  {area.title}
+                </h3>
+                <p 
+                  className="text-sm md:text-base leading-relaxed font-normal whitespace-pre-line" 
+                  style={{ color: 'hsl(45, 30%, 85%)' }}
+                >
+                  {area.description}
+                </p>
+              </div>
             </div>
           ))}
         </div>

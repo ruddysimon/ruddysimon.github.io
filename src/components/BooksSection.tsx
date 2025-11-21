@@ -13,104 +13,117 @@ interface Book {
 const BooksSection = () => {
   const ref = useRef<HTMLElement>(null);
 
-  const book: Book = {
-    title: "An Introduction to Statistical Learning",
-    author: "Gareth James, Daniela Witten, Trevor Hastie, Rob Tibshirani",
-    description: "A broad and accessible introduction to statistical learning methods. This book provides a less technical treatment of key topics in statistical learning, making it perfect for anyone who wishes to use contemporary tools for data analysis. Available for free download in both R and Python editions.",
-    imageUrl: "/ISLP_cover.webp",
-    websiteUrl: "https://www.statlearning.com/",
-    keyTopics: ["Statistical Learning", "Supervised Learning", "Unsupervised Learning", "Regression", "Classification"]
-  };
+  const books: Book[] = [
+    {
+      title: "An Introduction to Statistical Learning",
+      author: "Gareth James, Daniela Witten, Trevor Hastie, Rob Tibshirani",
+      description: "A broad and accessible introduction to statistical learning methods. This book provides a less technical treatment of key topics in statistical learning, making it perfect for anyone who wishes to use contemporary tools for data analysis. Available for free download in both R and Python editions.",
+      imageUrl: "/ISLP_cover.webp",
+      websiteUrl: "https://www.statlearning.com/",
+      keyTopics: ["Statistical Learning", "Supervised Learning", "Unsupervised Learning", "Regression", "Classification"]
+    },
+    {
+      title: "Natural Language Processing with Transformers",
+      author: "Lewis Tunstall, Leandro von Werra, Thomas Wolf",
+      description: "A comprehensive guide to building NLP applications with transformer models. This book covers everything from the fundamentals of transformers to advanced techniques for fine-tuning and deploying models. Learn how to use Hugging Face transformers to solve real-world NLP problems.",
+      imageUrl: "/nlp_cover.jpeg",
+      keyTopics: ["NLP", "Transformers", "Deep Learning", "Hugging Face", "BERT", "GPT"]
+    }
+  ];
 
   return (
     <section ref={ref} id="books" className="flex items-center justify-center p-8 pt-32 pb-16 min-h-screen">
-      <div className="max-w-4xl w-full">
-        <div className="flex justify-center">
-          <div 
-            className="group p-6 rounded-xl backdrop-blur-2xl border transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl w-full max-w-md"
-              style={{ 
-                background: 'linear-gradient(to bottom, rgba(255, 245, 230, 0.65), rgba(230, 240, 255, 0.45))',
-                borderColor: 'rgba(255, 255, 255, 0.35)',
-                boxShadow: '0 8px 24px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.15) inset',
-                backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)'
-              }}
-            >
-              {/* Book Cover */}
-              <AspectRatio
-                ratio={2 / 3}
-                className="w-full mb-4 rounded-xl overflow-hidden border"
-                style={{
-                  backgroundColor: 'rgba(255, 255, 255, 0.25)',
-                  borderColor: 'rgba(255, 255, 255, 0.35)',
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)'
+      <div className="max-w-6xl w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 justify-center">
+          {books.map((book, index) => (
+            <div key={index} className="relative w-full max-w-md mx-auto">
+              {/* Outline border with gradient effect */}
+              <div 
+                className="absolute inset-0 rounded-xl border-2"
+                style={{ 
+                  borderColor: 'hsla(45, 25%, 95%, 0.6)',
+                  boxShadow: '0 0 40px hsla(45, 25%, 95%, 0.35)',
+                }}
+              />
+              
+              {/* Content container */}
+              <div 
+                className="relative p-6 rounded-xl"
+                style={{ 
+                  backgroundColor: 'transparent',
                 }}
               >
-                {book.imageUrl ? (
-                  <img
-                    src={book.imageUrl}
-                    alt={`${book.title} cover`}
-                    className="h-full w-full object-contain md:object-cover"
-                  />
-                ) : (
-                  <div className="h-full w-full flex items-center justify-center">
-                    <div className="text-center p-4">
-                      <div className="text-6xl mb-2" style={{ color: 'hsl(30, 30%, 50%)' }}>📚</div>
-                      <p className="text-sm" style={{ color: 'hsl(30, 20%, 40%)' }}>Book Cover</p>
+                {/* Book Cover */}
+                <AspectRatio
+                  ratio={2 / 3}
+                  className="w-full mb-4 rounded-xl overflow-hidden"
+                >
+                  {book.imageUrl ? (
+                    <img
+                      src={book.imageUrl}
+                      alt={`${book.title} cover`}
+                      className="h-full w-full object-contain md:object-cover"
+                    />
+                  ) : (
+                    <div className="h-full w-full flex items-center justify-center">
+                      <div className="text-center p-4">
+                        <div className="text-6xl mb-2" style={{ color: 'hsl(45, 30%, 85%)' }}>📚</div>
+                        <p className="text-sm" style={{ color: 'hsl(45, 30%, 85%)' }}>Book Cover</p>
+                      </div>
                     </div>
+                  )}
+                </AspectRatio>
+
+                {/* Book Info */}
+                <h3 className="text-xl md:text-2xl font-semibold mb-2" style={{ color: 'hsl(45, 25%, 95%)' }}>
+                  {book.title}
+                </h3>
+                <p className="text-sm mb-4 font-medium" style={{ color: 'hsl(45, 30%, 85%)' }}>
+                  by {book.author}
+                </p>
+                <p 
+                  className="text-sm md:text-base leading-relaxed mb-4 font-normal" 
+                  style={{ color: 'hsl(45, 30%, 85%)' }}
+                >
+                  {book.description}
+                </p>
+                
+                {/* Website Link */}
+                {book.websiteUrl && (
+                  <div className="mb-4">
+                    <a
+                      href={book.websiteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center text-sm font-medium transition-colors hover:underline"
+                      style={{ color: 'hsl(180, 50%, 60%)' }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = 'hsl(180, 50%, 70%)'}
+                      onMouseLeave={(e) => e.currentTarget.style.color = 'hsl(180, 50%, 60%)'}
+                    >
+                      Download Free PDF →
+                    </a>
                   </div>
                 )}
-              </AspectRatio>
-
-              {/* Book Info */}
-              <h3 className="text-xl md:text-2xl font-semibold mb-2" style={{ color: 'rgba(20, 28, 35, 0.9)' }}>
-                {book.title}
-              </h3>
-              <p className="text-sm mb-4 font-medium" style={{ color: 'rgba(20, 28, 35, 0.7)' }}>
-                by {book.author}
-              </p>
-              <p 
-                className="text-sm md:text-base leading-relaxed mb-4 font-normal" 
-                style={{ color: 'rgba(20, 28, 35, 0.8)' }}
-              >
-                {book.description}
-              </p>
-              
-              {/* Website Link */}
-              {book.websiteUrl && (
-                <div className="mb-4">
-                  <a
-                    href={book.websiteUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-sm font-medium transition-colors hover:underline"
-                    style={{ color: 'rgba(0, 120, 135, 0.85)' }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(0, 140, 155, 1)'}
-                    onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(0, 120, 135, 0.85)'}
-                  >
-                    Download Free PDF →
-                  </a>
+                
+                {/* Key Topics */}
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {book.keyTopics.map((topic, topicIndex) => (
+                    <span
+                      key={topicIndex}
+                      className="px-3 py-1 rounded-full text-xs font-medium"
+                      style={{
+                        backgroundColor: 'hsla(45, 25%, 95%, 0.2)',
+                        color: 'hsl(45, 30%, 85%)',
+                        border: '1px solid hsla(45, 25%, 95%, 0.3)'
+                      }}
+                    >
+                      {topic}
+                    </span>
+                  ))}
                 </div>
-              )}
-              
-              {/* Key Topics */}
-              <div className="flex flex-wrap gap-2 mt-4">
-                {book.keyTopics.map((topic, topicIndex) => (
-                  <span
-                    key={topicIndex}
-                    className="px-3 py-1 rounded-full text-xs font-medium"
-                    style={{
-                      backgroundColor: 'rgba(255, 255, 255, 0.35)',
-                      color: 'rgba(20, 28, 35, 0.8)',
-                      border: '1px solid rgba(255, 255, 255, 0.45)'
-                    }}
-                  >
-                    {topic}
-                  </span>
-                ))}
               </div>
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

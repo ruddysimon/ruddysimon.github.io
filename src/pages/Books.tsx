@@ -4,10 +4,12 @@ import BooksSection from "@/components/BooksSection";
 
 const Books = () => {
   return (
-    <div className="relative">
+    <div className="relative min-h-screen">
       <BooksVideoBackground />
       <Header />
-      <BooksSection />
+      <div className="relative z-10">
+        <BooksSection />
+      </div>
     </div>
   );
 };

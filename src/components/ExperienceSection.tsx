@@ -41,9 +41,27 @@ const ExperienceSection = () => {
   return (
     <section ref={ref} id="experience" className="flex items-center justify-center p-8 py-16 transition-opacity duration-300" style={{ opacity }}>
       <div className="max-w-4xl w-full">
-        <h2 className="text-2xl md:text-3xl font-medium tracking-wide mb-12" style={{ color: 'hsl(45, 25%, 95%)' }}>Experience</h2>
-        
-        <div className="space-y-8">
+        <div className="relative">
+          {/* Outline border with gradient effect */}
+          <div 
+            className="absolute inset-0 rounded-xl border-2"
+            style={{ 
+              borderColor: 'hsla(45, 25%, 95%, 0.6)',
+              boxShadow: '0 0 40px hsla(45, 25%, 95%, 0.35)',
+            }}
+          />
+          
+          {/* Content container */}
+          <div 
+            className="relative p-8 md:p-12 rounded-xl"
+            style={{ 
+              backgroundColor: 'rgba(0, 0, 0, 0.3)',
+              backdropFilter: 'blur(10px)',
+            }}
+          >
+            <h2 className="text-2xl md:text-3xl font-medium tracking-wide mb-12" style={{ color: 'hsl(45, 25%, 95%)' }}>Experience</h2>
+            
+            <div className="space-y-8">
           {experiences.map((exp, index) => (
             <div key={index} className="border-l-2 pl-6 pb-8 last:pb-0" style={{ borderColor: 'hsl(180, 45%, 45%)' }}>
               <div className="flex items-center gap-3 mb-2">
@@ -67,6 +85,8 @@ const ExperienceSection = () => {
               </p>
             </div>
           ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
