@@ -15,11 +15,10 @@ const Header = () => {
 
   return (
     <header 
-      className="fixed top-0 right-0 z-50 p-6 transition-all duration-500 ease-in-out" 
+      className="fixed top-0 right-0 z-50 p-4 md:p-6 transition-all duration-500 ease-in-out left-0 md:left-64" 
       style={{ 
         opacity: headerOpacity,
         transform: isHidden ? 'translateY(-100%)' : 'translateY(0)',
-        left: '16rem', // Account for sidebar width (64 * 4 = 256px = 16rem)
       }}
     >
       <div className={`flex items-center ${isHomePage ? 'justify-end' : 'justify-between'}`}>
@@ -54,7 +53,7 @@ const Header = () => {
           </Link>
         )}
 
-        <nav className="flex items-center gap-4">
+        <nav className="flex items-center gap-2 md:gap-4">
           {/* LinkedIn */}
           <div className="relative">
             <div 
@@ -65,7 +64,7 @@ const Header = () => {
               }}
             />
             <div 
-              className="relative px-4 py-3 rounded-xl"
+              className="relative px-2 py-2 md:px-4 md:py-3 rounded-xl"
               style={{ 
                 backgroundColor: 'transparent',
               }}

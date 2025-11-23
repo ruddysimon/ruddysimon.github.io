@@ -22,7 +22,7 @@ const Index = () => {
     <div className="relative min-h-screen">
       <VideoBackground />
       <Sidebar activeSection={activeSection} onSectionChange={handleSectionChange} />
-      <div className="ml-64 relative z-10 isolate">
+      <div className="md:ml-64 relative z-10 isolate">
         <Header />
         {!activeSection && (
           <HeroSection />
