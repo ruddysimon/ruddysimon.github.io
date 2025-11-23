@@ -12,7 +12,7 @@ const Sidebar = ({ activeSection, onSectionChange }: SidebarProps) => {
 
   return (
     <aside 
-      className="fixed left-0 top-0 h-full w-64 p-6 z-40"
+      className="hidden md:fixed md:left-0 md:top-0 md:h-full md:w-64 md:p-6 md:z-40"
     >
       <div className="h-full flex flex-col">
         {/* Name and Title */}
