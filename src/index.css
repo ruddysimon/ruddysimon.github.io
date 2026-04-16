@@ -2,116 +2,287 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* =========================================================
+   RuddyOS — retro desktop design system.
+   Wallpaper = theme color (saturated).
+   Chrome (menubar, windows, dock) = cream.
+   Palette swaps via [data-theme] on <html>.
+   ========================================================= */
 
 @layer base {
   :root {
-    /* Ocean Theme Colors */
-    --background: 220 15% 8%;
-    --foreground: 45 25% 95%; /* Off-white with warm sand undertone */
+    /* Neutrals — warmer beige/tan chrome in light mode */
+    --cream: 36 42% 88%;           /* warm beige chrome */
+    --cream-soft: 38 48% 94%;      /* lighter warm inside surfaces */
+    --ink: 245 40% 14%;            /* #1A1832 text */
+    --ink-soft: 245 15% 38%;       /* muted text */
 
-    --card: 220 15% 12%;
-    --card-foreground: 45 25% 95%;
+    /* Wallpaper-layer text — does NOT flip in dark mode (sits over colored wallpaper) */
+    --paper: 36 40% 94%;           /* always-light warm cream */
+    --paper-ink: 245 40% 14%;      /* always-dark ink */
 
-    --popover: 220 20% 10%;
-    --popover-foreground: 45 25% 95%;
+    /* Accent color — swapped by [data-theme] below.
+       Default: Khaki (warm golden-olive). */
+    --accent-h: 42;
+    --accent-s: 62%;
+    --accent-l: 50%;
 
-    --primary: 180 45% 45%; /* Ocean teal */
-    --primary-foreground: 45 25% 95%;
+    --accent: var(--accent-h) var(--accent-s) var(--accent-l);
+    --accent-deep: var(--accent-h) calc(var(--accent-s) - 10%) calc(var(--accent-l) - 22%);
+    --accent-soft: var(--accent-h) calc(var(--accent-s) - 20%) calc(var(--accent-l) + 25%);
 
-    --secondary: 220 15% 18%;
-    --secondary-foreground: 45 25% 95%;
-
-    --muted: 220 15% 20%;
-    --muted-foreground: 45 20% 75%; /* Sand tone for muted text */
-
-    --accent: 180 50% 50%; /* Brighter teal for accents */
-    --accent-foreground: 45 25% 95%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 45 25% 95%;
-
-    --border: 180 20% 35%; /* Teal-tinted border */
-    --input: 180 20% 35%;
-    --ring: 180 50% 50%;
-
-    --radius: 0.75rem;
-    
-    --glass-background: 220 15% 15% / 0.7;
-    --glass-border: 180 20% 35% / 0.3;
-    
-    /* Ocean theme custom colors */
-    --sand: 45 30% 85%; /* Warm sand color */
-    --sand-light: 45 25% 92%; /* Light sand/off-white */
-    --teal: 180 45% 45%; /* Ocean teal */
-    --teal-light: 180 50% 60%; /* Light teal */
-    --teal-dark: 180 40% 35%; /* Dark teal */
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Semantic tokens */
+    --background: var(--accent);          /* wallpaper = accent */
+    --foreground: var(--cream);
+    --surface: var(--cream);              /* window/menubar/dock */
+    --surface-foreground: var(--ink);
+    --radius: 0.25rem;                    /* sharp corners */
   }
 
-  .dark {
-    --background: 220 15% 8%;
-    --foreground: 210 40% 98%;
+  /* -- Theme variants -- */
+  [data-theme="khaki"] {
+    --accent-h: 42; --accent-s: 62%; --accent-l: 50%;
+  }
+  [data-theme="violet"] {
+    --accent-h: 262; --accent-s: 83%; --accent-l: 58%;
+  }
+  [data-theme="teal"] {
+    --accent-h: 176; --accent-s: 68%; --accent-l: 41%;
+  }
+  [data-theme="magenta"] {
+    --accent-h: 330; --accent-s: 82%; --accent-l: 55%;
+  }
+  [data-theme="lime"] {
+    --accent-h: 78; --accent-s: 72%; --accent-l: 44%;
+  }
+  [data-theme="ember"] {
+    --accent-h: 18; --accent-s: 82%; --accent-l: 54%;
+  }
 
-    --card: 220 15% 12%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 220 20% 10%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 217 91% 60%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 220 15% 18%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 220 15% 20%;
-    --muted-foreground: 215 20% 65%;
-
-    --accent: 217 91% 60%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 220 15% 25%;
-    --input: 220 15% 25%;
-    --ring: 217 91% 60%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+  /* -- Dark mode (inverts chrome) -- */
+  [data-mode="dark"] {
+    --cream: 245 25% 12%;
+    --cream-soft: 245 20% 18%;
+    --ink: 36 40% 92%;
+    --ink-soft: 36 20% 70%;
   }
 }
 
 @layer base {
-  * {
-    @apply border-border;
+  html {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: hsl(var(--foreground));
+    background: hsl(var(--background));
+    font-feature-settings: "ss01", "ss02", "cv11";
+    -webkit-font-smoothing: antialiased;
   }
 
   body {
-    @apply bg-background text-foreground;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    @apply min-h-screen;
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    overflow: hidden; /* desktop OS — no scroll on body */
   }
+
+  h1, h2, h3, h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+
+  .font-pixel {
+    font-family: 'VT323', monospace;
+    letter-spacing: 0.02em;
+  }
+
+  /* Custom scrollbar inside windows */
+  .win-scroll::-webkit-scrollbar { width: 12px; height: 12px; }
+  .win-scroll::-webkit-scrollbar-track {
+    background: hsl(var(--surface));
+    border-left: 1px solid hsl(var(--ink) / 0.2);
+  }
+  .win-scroll::-webkit-scrollbar-thumb {
+    background: hsl(var(--ink) / 0.3);
+    border: 2px solid hsl(var(--surface));
+  }
+  .win-scroll::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--accent));
+  }
+}
+
+/* -----------------------------
+   Utility components
+----------------------------- */
+@layer components {
+  /* Chunky desktop icon tile — looks like a pixel folder/file */
+  .os-icon {
+    @apply flex flex-col items-center gap-1 w-20 cursor-pointer select-none px-2 py-2 rounded-sm transition-colors;
+  }
+  .os-icon:hover { background: hsl(var(--cream) / 0.15); }
+  .os-icon:active, .os-icon[data-selected="true"] { background: hsl(var(--cream) / 0.25); }
+
+  .os-icon-label {
+    @apply text-xs text-center leading-tight break-words;
+    color: hsl(var(--paper));
+  }
+
+  /* Dock item — small square tile */
+  .dock-item {
+    @apply flex items-center justify-center w-11 h-11 rounded-sm cursor-pointer transition-transform;
+    background: hsl(var(--accent-deep));
+    color: hsl(var(--cream));
+    border: 1px solid hsl(var(--ink) / 0.15);
+  }
+  .dock-item:hover { transform: translateY(-2px); }
+  .dock-item[data-active="true"]::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    width: 4px; height: 4px; border-radius: 50%;
+    background: hsl(var(--ink));
+  }
+  .dock-item { position: relative; }
+
+  /* Window chrome */
+  .window {
+    background: hsl(var(--surface));
+    color: hsl(var(--surface-foreground));
+    border: 1px solid hsl(var(--ink) / 0.25);
+    border-radius: var(--radius);
+    box-shadow:
+      0 1px 0 0 hsl(var(--cream)) inset,
+      0 10px 30px -10px hsl(var(--ink) / 0.5),
+      0 20px 60px -20px hsl(var(--ink) / 0.35);
+    overflow: hidden;
+  }
+
+  .window-title {
+    @apply flex items-center justify-between px-3 text-[13px] font-medium select-none relative;
+    height: 36px;
+    background:
+      linear-gradient(hsl(var(--cream-soft)), hsl(var(--cream)));
+    border-bottom: 1px solid hsl(var(--ink) / 0.2);
+    color: hsl(var(--ink));
+    cursor: grab;
+  }
+  .window-title:active { cursor: grabbing; }
+  .window[data-focused="false"] .window-title {
+    color: hsl(var(--ink) / 0.5);
+    background: hsl(var(--cream));
+  }
+
+  .win-btn {
+    @apply w-3.5 h-3.5 rounded-full border;
+    border-color: hsl(var(--ink) / 0.3);
+  }
+  .win-btn-close    { background: hsl(0 75% 62%); }
+  .win-btn-minimize { background: hsl(44 90% 58%); }
+  .win-btn-maximize { background: hsl(140 50% 52%); }
+
+  /* Menubar */
+  .menubar {
+    @apply flex items-center gap-6 px-5 h-10 select-none;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 13.5px;
+    letter-spacing: 0.01em;
+    background: hsl(var(--surface));
+    color: hsl(var(--surface-foreground));
+    border-bottom: 1px solid hsl(var(--ink) / 0.18);
+    backdrop-filter: blur(8px);
+  }
+  .menubar-item {
+    @apply px-3 py-1.5 rounded-sm cursor-pointer;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+  }
+  .menubar-item:hover { background: hsl(var(--accent) / 0.18); }
+
+  /* Chunky accent button */
+  .btn-os {
+    @apply inline-flex items-center gap-2 px-3 py-1.5 text-xs rounded-sm cursor-pointer transition-transform;
+    background: hsl(var(--accent));
+    color: hsl(var(--cream));
+    border: 1px solid hsl(var(--ink) / 0.25);
+    box-shadow: 2px 2px 0 0 hsl(var(--ink));
+  }
+  .btn-os:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 0 hsl(var(--ink)); }
+  .btn-os:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 0 hsl(var(--ink)); }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-3 py-1.5 text-xs rounded-sm cursor-pointer transition-colors;
+    background: hsl(var(--cream-soft));
+    color: hsl(var(--ink));
+    border: 1px solid hsl(var(--ink) / 0.25);
+  }
+  .btn-ghost:hover { background: hsl(var(--accent) / 0.15); }
+
+  /* Tag chip — inside windows */
+  .chip-os {
+    @apply inline-flex items-center px-2 py-0.5 rounded-sm text-[10px] font-medium uppercase tracking-wider;
+    background: hsl(var(--accent) / 0.15);
+    color: hsl(var(--ink));
+    border: 1px solid hsl(var(--ink) / 0.2);
+  }
+
+  /* Pixelated tile pattern for wallpaper texture */
+  .wallpaper-noise {
+    background-image:
+      radial-gradient(hsl(var(--accent-deep) / 0.25) 1px, transparent 1.5px);
+    background-size: 6px 6px;
+  }
+  .wallpaper-scan {
+    background-image: repeating-linear-gradient(
+      180deg,
+      hsl(var(--accent-deep) / 0.2) 0 2px,
+      transparent 2px 4px
+    );
+  }
+
+  /* Chunky pixel-art folder tile for desktop icons
+     — a sharper, more personal take than rounded app tiles */
+  .pixel-folder {
+    position: relative;
+    width: 52px; height: 46px;
+    background: hsl(var(--accent));
+    border: 1.5px solid hsl(var(--paper-ink) / 0.85);
+    border-radius: 3px;
+  }
+  .pixel-folder::before {
+    /* folder "tab" on top */
+    content: "";
+    position: absolute;
+    top: -5px; left: 6px;
+    width: 18px; height: 5px;
+    background: hsl(var(--accent));
+    border: 1.5px solid hsl(var(--paper-ink) / 0.85);
+    border-bottom: 0;
+    border-radius: 3px 3px 0 0;
+  }
+
+  /* Desktop mini vinyl — spinning decoration, nod to the old design */
+  .vinyl-os {
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at center, hsl(var(--accent)) 0 18%, transparent 18.5%),
+      radial-gradient(circle at center, hsl(var(--cream)) 0 5%, transparent 5.5%),
+      repeating-radial-gradient(circle at center,
+        hsl(var(--ink)) 0 1px,
+        hsl(var(--ink) / 0.85) 1px 3px);
+    box-shadow:
+      inset 0 0 24px rgba(0,0,0,0.7),
+      0 12px 40px hsl(var(--ink) / 0.35);
+    animation: spin-os 9s linear infinite;
+  }
+  @keyframes spin-os {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Blink cursor */
+  @keyframes blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+  .blink { animation: blink 1s steps(1) infinite; }
 }

@@ -1,57 +1,33 @@
 import { useState } from "react";
-import VideoBackground from "@/components/VideoBackground";
-import Header from "@/components/Header";
-import HeroSection from "@/components/HeroSection";
-import NavigationCards from "@/components/NavigationCards";
-import ProjectsSection from "@/components/ProjectsSection";
-import SectionDivider from "@/components/SectionDivider";
-import Sidebar from "@/components/Sidebar";
-import AboutSection from "@/components/AboutSection";
-import ExperienceSection from "@/components/ExperienceSection";
-// import ChatBot from "@/components/ChatBot"; // Temporarily disabled - will add back later with Supabase
+import { motion } from "framer-motion";
+import { ThemeProvider } from "@/os/ThemeContext";
+import { WindowManagerProvider } from "@/os/WindowManager";
+import { APPS } from "@/os/apps/registry";
+import MenuBar from "@/os/MenuBar";
+import Desktop from "@/os/Desktop";
+import Dock from "@/os/Dock";
+import BootScreen from "@/os/BootScreen";
 
-const Index = () => {
-  const [activeSection, setActiveSection] = useState<string | null>(null);
-
-  const handleSectionChange = (section: string) => {
-    // Toggle: if clicking the same section, close it
-    setActiveSection(activeSection === section ? null : section);
-  };
+export default function Index() {
+  const [booted, setBooted] = useState(false);
 
   return (
-    <div className="relative min-h-screen">
-      <VideoBackground />
-      <Sidebar activeSection={activeSection} onSectionChange={handleSectionChange} />
-      <div className="ml-64 relative z-10 isolate">
-        <Header />
-        {!activeSection && (
-          <HeroSection />
-        )}
-        {activeSection === 'about' && (
-          <div className="flex items-center justify-center min-h-screen p-8">
-            <div className="w-full max-w-4xl">
-              <AboutSection />
-            </div>
-          </div>
-        )}
-        {activeSection === 'experience' && (
-          <div className="flex items-center justify-center min-h-screen p-8">
-            <div className="w-full max-w-4xl">
-              <ExperienceSection />
-            </div>
-          </div>
-        )}
-        {activeSection === 'projects' && (
-          <div className="flex items-center justify-center min-h-screen p-8">
-            <div className="w-full max-w-4xl">
-              <ProjectsSection />
-            </div>
-          </div>
-        )}
-        {/* <ChatBot /> */}
-      </div>
-    </div>
+    <ThemeProvider>
+      <WindowManagerProvider apps={APPS}>
+        <div className="h-screen w-screen overflow-hidden bg-background text-foreground relative">
+          {!booted && <BootScreen onDone={() => setBooted(true)} />}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: booted ? 1 : 0, scale: booted ? 1 : 0.98 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-0"
+          >
+            <MenuBar />
+            <Desktop />
+            <Dock />
+          </motion.div>
+        </div>
+      </WindowManagerProvider>
+    </ThemeProvider>
   );
-};
-
-export default Index;
+}
