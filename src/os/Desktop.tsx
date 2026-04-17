@@ -15,7 +15,7 @@ const DESKTOP_ICONS: { appId: AppId; label: string }[] = [
 
 export default function Desktop() {
   const { apps, windows, openApp } = useWM();
-  const { wallpaper } = useTheme();
+  const { wallpaper, overlay } = useTheme();
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -33,7 +33,7 @@ export default function Desktop() {
     <div className="fixed inset-0 pt-9 pb-20 overflow-hidden">
       {/* Wallpaper layer */}
       <div className="absolute inset-0 -z-10">
-        {isVideo && "src" in wp! ? (
+        {isVideo && wp && "src" in wp ? (
           <>
             <video
               key={wp.src}
@@ -50,10 +50,14 @@ export default function Desktop() {
           </>
         ) : (
           <div
-            className={`w-full h-full ${wallpaper === "dots" ? "wallpaper-noise" : ""} ${wallpaper === "scan" ? "wallpaper-scan" : ""}`}
+            className="w-full h-full"
             style={{ background: "hsl(var(--accent))" }}
           />
         )}
+
+        {/* Pattern overlay — sits ON TOP of the active wallpaper (video or solid) */}
+        {overlay === "dots" && <div className="absolute inset-0 wallpaper-noise pointer-events-none" />}
+        {overlay === "scan" && <div className="absolute inset-0 wallpaper-scan pointer-events-none" />}
       </div>
 
       {/* Desktop icons */}

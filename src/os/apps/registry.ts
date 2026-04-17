@@ -19,5 +19,5 @@ export const APPS: Record<AppId, AppDef> = {
   contact:    { id: "contact",    title: "contact",     icon: Mail,           Component: ContactApp,    defaultSize: { w: 520, h: 440 } },
   terminal:   { id: "terminal",   title: "terminal",    icon: TerminalSquare, Component: TerminalApp,   defaultSize: { w: 620, h: 400 } },
   chatbot:    { id: "chatbot",    title: "RuddyBot",    icon: MessageCircle,  Component: ChatbotApp,    defaultSize: { w: 500, h: 580 } },
-  settings:   { id: "settings",   title: "Settings",    icon: Settings,       Component: SettingsApp,   defaultSize: { w: 600, h: 560 } },
+  settings:   { id: "settings",   title: "Settings",    icon: Settings,       Component: SettingsApp,   defaultSize: { w: 760, h: 640 } },
 };

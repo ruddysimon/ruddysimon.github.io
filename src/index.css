@@ -21,11 +21,10 @@
     --paper: 36 40% 94%;           /* always-light warm cream */
     --paper-ink: 245 40% 14%;      /* always-dark ink */
 
-    /* Accent color — swapped by [data-theme] below.
-       Default: Khaki (warm golden-olive). */
-    --accent-h: 42;
-    --accent-s: 62%;
-    --accent-l: 50%;
+    /* Accent color — swapped by [data-theme] below. Default: Orange. */
+    --accent-h: 18;
+    --accent-s: 82%;
+    --accent-l: 54%;
 
     --accent: var(--accent-h) var(--accent-s) var(--accent-l);
     --accent-deep: var(--accent-h) calc(var(--accent-s) - 10%) calc(var(--accent-l) - 22%);
@@ -40,24 +39,10 @@
   }
 
   /* -- Theme variants -- */
-  [data-theme="khaki"] {
-    --accent-h: 42; --accent-s: 62%; --accent-l: 50%;
-  }
-  [data-theme="violet"] {
-    --accent-h: 262; --accent-s: 83%; --accent-l: 58%;
-  }
-  [data-theme="teal"] {
-    --accent-h: 176; --accent-s: 68%; --accent-l: 41%;
-  }
-  [data-theme="magenta"] {
-    --accent-h: 330; --accent-s: 82%; --accent-l: 55%;
-  }
-  [data-theme="lime"] {
-    --accent-h: 78; --accent-s: 72%; --accent-l: 44%;
-  }
-  [data-theme="ember"] {
-    --accent-h: 18; --accent-s: 82%; --accent-l: 54%;
-  }
+  [data-theme="orange"] { --accent-h: 18;  --accent-s: 82%; --accent-l: 54%; }
+  [data-theme="green"]  { --accent-h: 140; --accent-s: 50%; --accent-l: 42%; }
+  [data-theme="blue"]   { --accent-h: 220; --accent-s: 75%; --accent-l: 52%; }
+  [data-theme="purple"] { --accent-h: 262; --accent-s: 83%; --accent-l: 58%; }
 
   /* -- Dark mode (inverts chrome) -- */
   [data-mode="dark"] {
@@ -226,17 +211,17 @@
     border: 1px solid hsl(var(--ink) / 0.2);
   }
 
-  /* Pixelated tile pattern for wallpaper texture */
+  /* Pixelated tile pattern for wallpaper texture — visible on video AND solid */
   .wallpaper-noise {
     background-image:
-      radial-gradient(hsl(var(--accent-deep) / 0.25) 1px, transparent 1.5px);
-    background-size: 6px 6px;
+      radial-gradient(hsl(var(--paper-ink) / 0.45) 1.2px, transparent 1.6px);
+    background-size: 8px 8px;
   }
   .wallpaper-scan {
     background-image: repeating-linear-gradient(
       180deg,
-      hsl(var(--accent-deep) / 0.2) 0 2px,
-      transparent 2px 4px
+      hsl(var(--paper-ink) / 0.35) 0 2px,
+      transparent 2px 5px
     );
   }
 

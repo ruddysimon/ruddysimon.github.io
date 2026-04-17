@@ -1,23 +1,20 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
-export type ThemeColor = "khaki" | "violet" | "teal" | "magenta" | "lime" | "ember";
+export type ThemeColor = "orange" | "green" | "blue" | "purple";
 export type ThemeMode = "light" | "dark";
+export type Overlay = "none" | "dots" | "scan";
 
 export const THEME_COLORS: { id: ThemeColor; label: string; swatch: string }[] = [
-  { id: "khaki", label: "Desert Khaki", swatch: "hsl(42 62% 50%)" },
-  { id: "ember", label: "Ember Orange", swatch: "hsl(18 82% 54%)" },
-  { id: "magenta", label: "Hot Magenta", swatch: "hsl(330 82% 55%)" },
-  { id: "violet", label: "Electric Violet", swatch: "hsl(262 83% 58%)" },
-  { id: "teal", label: "Lagoon Teal", swatch: "hsl(176 68% 41%)" },
-  { id: "lime", label: "Acid Lime", swatch: "hsl(78 72% 44%)" },
+  { id: "orange", label: "Orange", swatch: "hsl(18 82% 54%)" },
+  { id: "green",  label: "Green",  swatch: "hsl(140 50% 42%)" },
+  { id: "blue",   label: "Blue",   swatch: "hsl(220 75% 52%)" },
+  { id: "purple", label: "Purple", swatch: "hsl(262 83% 58%)" },
 ];
 
 export const WALLPAPERS = [
-  { id: "solid",  label: "Solid",    kind: "color" as const },
-  { id: "dots",   label: "Dots",     kind: "pattern" as const },
-  { id: "scan",   label: "Scanlines", kind: "pattern" as const },
-  { id: "vid-1",  label: "Video 1",  kind: "video" as const, src: "/background-video.mp4" },
-  { id: "vid-2",  label: "Video 2",  kind: "video" as const, src: "/background-video1.mp4" },
+  { id: "solid",  label: "Solid color",  kind: "color" as const },
+  { id: "vid-1",  label: "Sunset coast", kind: "video" as const, src: "/background-video.mp4" },
+  { id: "vid-2",  label: "Ocean waves",  kind: "video" as const, src: "/background-video1.mp4" },
 ];
 
 export type WallpaperId = typeof WALLPAPERS[number]["id"];
@@ -26,9 +23,11 @@ type ThemeCtx = {
   color: ThemeColor;
   mode: ThemeMode;
   wallpaper: string;
+  overlay: Overlay;
   setColor: (c: ThemeColor) => void;
   setMode: (m: ThemeMode) => void;
   setWallpaper: (w: string) => void;
+  setOverlay: (o: Overlay) => void;
 };
 
 const ThemeContext = createContext<ThemeCtx | null>(null);
@@ -36,9 +35,10 @@ const ThemeContext = createContext<ThemeCtx | null>(null);
 const STORAGE_KEY = "ruddyos.theme";
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [color, setColor] = useState<ThemeColor>("khaki");
+  const [color, setColor] = useState<ThemeColor>("orange");
   const [mode, setMode] = useState<ThemeMode>("light");
-  const [wallpaper, setWallpaper] = useState<string>("dots");
+  const [wallpaper, setWallpaper] = useState<string>("vid-1");
+  const [overlay, setOverlay] = useState<Overlay>("none");
 
   useEffect(() => {
     try {
@@ -48,6 +48,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         if (saved.color) setColor(saved.color);
         if (saved.mode) setMode(saved.mode);
         if (saved.wallpaper) setWallpaper(saved.wallpaper);
+        if (saved.overlay) setOverlay(saved.overlay);
       }
     } catch {}
   }, []);
@@ -56,11 +57,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     document.documentElement.dataset.theme = color;
     document.documentElement.dataset.mode = mode;
     document.documentElement.dataset.wallpaper = wallpaper;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ color, mode, wallpaper }));
-  }, [color, mode, wallpaper]);
+    document.documentElement.dataset.overlay = overlay;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ color, mode, wallpaper, overlay }));
+  }, [color, mode, wallpaper, overlay]);
 
   return (
-    <ThemeContext.Provider value={{ color, mode, wallpaper, setColor, setMode, setWallpaper }}>
+    <ThemeContext.Provider value={{ color, mode, wallpaper, overlay, setColor, setMode, setWallpaper, setOverlay }}>
       {children}
     </ThemeContext.Provider>
   );
