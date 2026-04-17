@@ -1,7 +1,7 @@
 import { useTheme, THEME_COLORS, WALLPAPERS, ThemeColor, ThemeMode, Overlay } from "../ThemeContext";
-import { Play } from "lucide-react";
+import { Play, Image } from "lucide-react";
 
-const INTER = "'Inter', system-ui, -apple-system, Helvetica, sans-serif";
+const SERIF = '"Newsreader", Georgia, "Times New Roman", serif';
 
 const OVERLAYS: { id: Overlay; label: string }[] = [
   { id: "none", label: "None" },
@@ -15,16 +15,16 @@ export default function SettingsApp() {
   return (
     <div
       className="px-10 py-8 max-w-[680px] mx-auto"
-      style={{ fontFamily: INTER, color: "hsl(var(--ink))" }}
+      style={{ fontFamily: SERIF, color: "hsl(var(--ink))" }}
     >
       <h1
-        className="mb-8"
+        className="mb-7"
         style={{
-          fontFamily: INTER,
-          fontSize: "44px",
-          fontWeight: 800,
-          letterSpacing: "-0.02em",
-          lineHeight: 1,
+          fontFamily: SERIF,
+          fontSize: "38px",
+          fontWeight: 400,
+          letterSpacing: "-0.01em",
+          lineHeight: 1.1,
         }}
       >
         Settings
@@ -32,19 +32,19 @@ export default function SettingsApp() {
 
       <Card title="Appearance">
         <Label>Theme mode</Label>
-        <div className="flex gap-2 mb-6">
+        <div className="flex gap-2 mb-5">
           {(["light", "dark"] as ThemeMode[]).map((m) => (
             <button
               key={m}
               onClick={() => setMode(m)}
-              className="px-6 py-2.5 rounded-md transition-colors"
+              className="px-5 py-1.5 rounded-sm transition-colors"
               style={{
-                fontFamily: INTER,
-                fontWeight: 500,
+                fontFamily: SERIF,
+                fontWeight: 400,
                 fontSize: "14px",
                 background: mode === m ? "hsl(var(--accent))" : "hsl(var(--cream-soft))",
                 color: mode === m ? "hsl(var(--paper))" : "hsl(var(--ink))",
-                border: `1px solid ${mode === m ? "hsl(var(--accent))" : "hsl(var(--ink) / 0.2)"}`,
+                border: `1px solid ${mode === m ? "hsl(var(--accent))" : "hsl(var(--ink) / 0.25)"}`,
               }}
             >
               {m === "light" ? "Light" : "Dark"}
@@ -53,27 +53,27 @@ export default function SettingsApp() {
         </div>
 
         <Label>Theme color</Label>
-        <div className="flex flex-wrap gap-2.5">
+        <div className="flex flex-wrap gap-2">
           {THEME_COLORS.map((c) => {
             const selected = color === c.id;
             return (
               <button
                 key={c.id}
                 onClick={() => setColor(c.id as ThemeColor)}
-                className="flex items-center gap-2.5 rounded-md transition-colors"
+                className="flex items-center gap-2 rounded-sm transition-colors"
                 style={{
-                  fontFamily: INTER,
-                  fontWeight: 500,
+                  fontFamily: SERIF,
+                  fontWeight: 400,
                   fontSize: "14px",
                   background: "hsl(var(--cream-soft))",
                   color: "hsl(var(--ink))",
-                  border: `${selected ? 2 : 1}px solid ${selected ? "hsl(var(--ink))" : "hsl(var(--ink) / 0.18)"}`,
-                  padding: selected ? "9px 15px" : "10px 16px",
+                  border: `${selected ? 1.5 : 1}px solid ${selected ? "hsl(var(--ink))" : "hsl(var(--ink) / 0.22)"}`,
+                  padding: selected ? "5.5px 11px" : "6px 12px",
                 }}
               >
                 <span
-                  className="w-[18px] h-[18px] rounded-[3px]"
-                  style={{ background: c.swatch, border: "1px solid hsl(var(--ink) / 0.25)" }}
+                  className="w-[14px] h-[14px] rounded-[2px]"
+                  style={{ background: c.swatch, border: "1px solid hsl(var(--ink) / 0.3)" }}
                 />
                 {c.label}
               </button>
@@ -84,25 +84,28 @@ export default function SettingsApp() {
 
       <Card title="Wallpaper">
         <p
-          className="mb-5"
-          style={{ fontFamily: INTER, fontSize: "14px", color: "hsl(var(--ink-soft))" }}
+          className="mb-4"
+          style={{ fontFamily: SERIF, fontSize: "14px", fontWeight: 400, color: "hsl(var(--ink-soft))" }}
         >
-          Choose a desktop background — solid color or one of the looping videos.
+          Choose a desktop background — solid color, looping video, or travel photo.
         </p>
-        <div className="grid grid-cols-3 gap-3">
-          {WALLPAPERS.map((w) => {
+
+        {/* Videos + solid */}
+        <Label>Built-in</Label>
+        <div className="grid grid-cols-3 gap-3 mb-5">
+          {WALLPAPERS.filter((w) => w.kind !== "image").map((w) => {
             const isSelected = wallpaper === w.id;
             return (
               <button
                 key={w.id}
                 onClick={() => setWallpaper(w.id)}
-                className="rounded-md overflow-hidden text-left transition-colors"
+                className="rounded-sm overflow-hidden text-left transition-colors"
                 style={{
                   background: "hsl(var(--cream-soft))",
-                  border: `${isSelected ? 2 : 1}px solid ${isSelected ? "hsl(var(--ink))" : "hsl(var(--ink) / 0.15)"}`,
+                  border: `${isSelected ? 1.5 : 1}px solid ${isSelected ? "hsl(var(--ink))" : "hsl(var(--ink) / 0.18)"}`,
                 }}
               >
-                <div className="h-24 w-full overflow-hidden relative" style={{ background: "hsl(var(--accent))" }}>
+                <div className="h-20 w-full overflow-hidden relative" style={{ background: "hsl(var(--accent))" }}>
                   {w.kind === "video" && "src" in w && (
                     <>
                       <video
@@ -113,15 +116,15 @@ export default function SettingsApp() {
                         autoPlay
                         className="absolute inset-0 w-full h-full object-cover"
                       />
-                      <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-sm bg-ink/70 flex items-center justify-center">
-                        <Play className="w-3 h-3 text-cream" />
+                      <div className="absolute top-1.5 right-1.5 w-4 h-4 rounded-sm bg-ink/70 flex items-center justify-center">
+                        <Play className="w-2.5 h-2.5 text-cream" />
                       </div>
                     </>
                   )}
                 </div>
                 <div
-                  className="px-3 py-2.5"
-                  style={{ fontFamily: INTER, fontWeight: 500, fontSize: "13px", color: "hsl(var(--ink))" }}
+                  className="px-2.5 py-2"
+                  style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "13px", color: "hsl(var(--ink))" }}
                 >
                   {w.label}
                 </div>
@@ -130,23 +133,63 @@ export default function SettingsApp() {
           })}
         </div>
 
-        <div className="mt-7">
+        {/* Travel photos */}
+        <Label>Travel photos</Label>
+        <div className="grid grid-cols-3 gap-3">
+          {WALLPAPERS.filter((w) => w.kind === "image").map((w) => {
+            const isSelected = wallpaper === w.id;
+            return (
+              <button
+                key={w.id}
+                onClick={() => setWallpaper(w.id)}
+                className="rounded-sm overflow-hidden text-left transition-colors"
+                style={{
+                  background: "hsl(var(--cream-soft))",
+                  border: `${isSelected ? 1.5 : 1}px solid ${isSelected ? "hsl(var(--ink))" : "hsl(var(--ink) / 0.18)"}`,
+                }}
+              >
+                <div className="h-20 w-full overflow-hidden relative" style={{ background: "hsl(var(--cream))" }}>
+                  {"src" in w && (
+                    <>
+                      <img
+                        src={w.src}
+                        alt={w.label}
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
+                      <div className="absolute top-1.5 right-1.5 w-4 h-4 rounded-sm bg-ink/70 flex items-center justify-center">
+                        <Image className="w-2.5 h-2.5 text-cream" />
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div
+                  className="px-2.5 py-2"
+                  style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "13px", color: "hsl(var(--ink))" }}
+                >
+                  {w.label}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="mt-6">
           <Label>Pattern overlay</Label>
-          <div className="flex gap-2.5">
+          <div className="flex gap-2">
             {OVERLAYS.map((o) => {
               const selected = overlay === o.id;
               return (
                 <button
                   key={o.id}
                   onClick={() => setOverlay(o.id)}
-                  className="flex items-center gap-2.5 px-4 py-2.5 rounded-md transition-colors"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-sm transition-colors"
                   style={{
-                    fontFamily: INTER,
-                    fontWeight: 500,
+                    fontFamily: SERIF,
+                    fontWeight: 400,
                     fontSize: "14px",
                     background: selected ? "hsl(var(--accent))" : "hsl(var(--cream-soft))",
                     color: selected ? "hsl(var(--paper))" : "hsl(var(--ink))",
-                    border: `1px solid ${selected ? "hsl(var(--accent))" : "hsl(var(--ink) / 0.2)"}`,
+                    border: `1px solid ${selected ? "hsl(var(--accent))" : "hsl(var(--ink) / 0.25)"}`,
                   }}
                 >
                   <OverlaySwatch id={o.id} active={selected} />
@@ -156,8 +199,8 @@ export default function SettingsApp() {
             })}
           </div>
           <p
-            className="mt-3"
-            style={{ fontFamily: INTER, fontSize: "12px", color: "hsl(var(--ink-soft))" }}
+            className="mt-2.5"
+            style={{ fontFamily: SERIF, fontSize: "12px", fontStyle: "italic", color: "hsl(var(--ink-soft))" }}
           >
             Adds a dot or scanline texture on top of the current wallpaper.
           </p>
@@ -165,8 +208,8 @@ export default function SettingsApp() {
       </Card>
 
       <p
-        className="mt-5"
-        style={{ fontFamily: INTER, fontSize: "12px", color: "hsl(var(--ink-soft))" }}
+        className="mt-4"
+        style={{ fontFamily: SERIF, fontSize: "12px", fontStyle: "italic", color: "hsl(var(--ink-soft))" }}
       >
         RuddyOS — preferences saved locally in your browser.
       </p>
@@ -177,18 +220,18 @@ export default function SettingsApp() {
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section
-      className="rounded-md px-7 py-6 mb-5"
+      className="rounded-sm px-6 py-5 mb-4"
       style={{
         background: "hsl(var(--surface))",
-        border: "1px solid hsl(var(--ink) / 0.18)",
+        border: "1px solid hsl(var(--ink) / 0.22)",
       }}
     >
       <h2
-        className="mb-5"
+        className="mb-4"
         style={{
-          fontFamily: INTER,
-          fontSize: "18px",
-          fontWeight: 700,
+          fontFamily: SERIF,
+          fontSize: "20px",
+          fontWeight: 400,
           letterSpacing: "-0.005em",
           color: "hsl(var(--ink))",
         }}
@@ -203,8 +246,8 @@ function Card({ title, children }: { title: string; children: React.ReactNode })
 function Label({ children }: { children: React.ReactNode }) {
   return (
     <div
-      className="mb-2.5"
-      style={{ fontFamily: INTER, fontSize: "13px", fontWeight: 500, color: "hsl(var(--ink-soft))" }}
+      className="mb-2"
+      style={{ fontFamily: SERIF, fontSize: "13px", fontWeight: 400, fontStyle: "italic", color: "hsl(var(--ink-soft))" }}
     >
       {children}
     </div>
@@ -216,8 +259,8 @@ function OverlaySwatch({ id, active }: { id: Overlay; active: boolean }) {
   if (id === "none") {
     return (
       <span
-        className="w-[18px] h-[18px] rounded-[3px] flex items-center justify-center"
-        style={{ border: `1px solid ${fg}`, color: fg, fontSize: "10px", fontWeight: 700 }}
+        className="w-[14px] h-[14px] rounded-[2px] flex items-center justify-center"
+        style={{ border: `1px solid ${fg}`, color: fg, fontSize: "9px", fontWeight: 400 }}
       >
         Ø
       </span>
@@ -226,7 +269,7 @@ function OverlaySwatch({ id, active }: { id: Overlay; active: boolean }) {
   if (id === "dots") {
     return (
       <span
-        className="w-[18px] h-[18px] rounded-[3px]"
+        className="w-[14px] h-[14px] rounded-[2px]"
         style={{
           backgroundImage: `radial-gradient(${fg} 1px, transparent 1.4px)`,
           backgroundSize: "4px 4px",
@@ -237,7 +280,7 @@ function OverlaySwatch({ id, active }: { id: Overlay; active: boolean }) {
   }
   return (
     <span
-      className="w-[18px] h-[18px] rounded-[3px]"
+      className="w-[14px] h-[14px] rounded-[2px]"
       style={{
         backgroundImage: `repeating-linear-gradient(180deg, ${fg} 0 1px, transparent 1px 3px)`,
         border: `1px solid ${fg}`,

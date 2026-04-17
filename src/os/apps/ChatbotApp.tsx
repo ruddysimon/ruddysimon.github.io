@@ -1,14 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { Send, Sparkles } from "lucide-react";
+import { Send } from "lucide-react";
 
 type Msg = { from: "bot" | "me"; text: string; id: number };
-
-const SUGGESTIONS = [
-  "What does Ruddy do?",
-  "Tell me about his ML projects",
-  "What's his tech stack?",
-  "How can I reach him?",
-];
 
 // Simple keyword-based responder. Swap with a real API later.
 function respond(input: string): string {
@@ -32,7 +25,7 @@ function respond(input: string): string {
 
 export default function ChatbotApp() {
   const [messages, setMessages] = useState<Msg[]>([
-    { from: "bot", text: "Hi, I'm RuddyBot 👋 Ask me anything about Ruddy's work, projects, or experience.", id: 1 },
+    { from: "bot", text: "Hi, I'm Simon. Ask me anything about Ruddy's work, projects, or experience.", id: 1 },
   ]);
   const [input, setInput] = useState("");
   const [thinking, setThinking] = useState(false);
@@ -59,14 +52,9 @@ export default function ChatbotApp() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center gap-2 px-5 py-3 border-b border-ink/15 bg-cream-soft">
-        <div className="w-7 h-7 rounded-full bg-accent flex items-center justify-center text-cream">
-          <Sparkles className="w-3.5 h-3.5" />
-        </div>
-        <div>
-          <div className="text-sm font-semibold leading-tight">RuddyBot</div>
-          <div className="text-[10px] text-ink-soft">usually replies in seconds · keyword-based demo</div>
-        </div>
+      <div className="px-5 py-3 border-b border-ink/15 bg-cream-soft">
+        <div className="text-sm font-semibold leading-tight">Simon</div>
+        <div className="text-[10px] text-ink-soft">usually replies in seconds · keyword-based demo</div>
       </div>
 
       <div ref={scrollRef} className="flex-1 overflow-auto p-4 space-y-3 win-scroll">
@@ -94,20 +82,6 @@ export default function ChatbotApp() {
         )}
       </div>
 
-      {messages.length <= 1 && (
-        <div className="px-4 pb-2 flex flex-wrap gap-1.5">
-          {SUGGESTIONS.map((s) => (
-            <button
-              key={s}
-              onClick={() => send(s)}
-              className="text-[11px] px-2.5 py-1 rounded-sm border border-ink/20 bg-cream-soft hover:border-accent hover:bg-accent/10"
-            >
-              {s}
-            </button>
-          ))}
-        </div>
-      )}
-
       <form
         onSubmit={(e) => { e.preventDefault(); send(input); }}
         className="flex gap-2 p-3 border-t border-ink/15 bg-cream-soft"
@@ -115,7 +89,7 @@ export default function ChatbotApp() {
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask RuddyBot…"
+          placeholder="Ask Simon…"
           className="flex-1 px-3 py-2 text-sm rounded-sm bg-surface border border-ink/20 outline-none focus:border-accent"
         />
         <button type="submit" className="btn-os" disabled={!input.trim()}>

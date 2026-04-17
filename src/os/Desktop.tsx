@@ -3,12 +3,14 @@ import { useWM, AppId } from "./WindowManager";
 import { useTheme, WALLPAPERS } from "./ThemeContext";
 import Window from "./Window";
 import DesktopWidgets from "./DesktopWidgets";
+import Win98Folder from "./Win98Folder";
 
 const DESKTOP_ICONS: { appId: AppId; label: string }[] = [
   { appId: "about", label: "about.txt" },
   { appId: "experience", label: "experience" },
   { appId: "projects", label: "projects" },
   { appId: "books", label: "library" },
+  { appId: "travel", label: "travel" },
   { appId: "resume", label: "resume.pdf" },
   { appId: "contact", label: "contact" },
 ];
@@ -44,9 +46,18 @@ export default function Desktop() {
               playsInline
               className="w-full h-full object-cover"
             />
-            {/* tint the video with the accent color */}
             <div className="absolute inset-0 bg-accent/45 mix-blend-multiply" />
             <div className="absolute inset-0 bg-ink/20" />
+          </>
+        ) : wp?.kind === "image" && "src" in wp ? (
+          <>
+            <img
+              key={wp.src}
+              src={wp.src}
+              alt=""
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-ink/30" />
           </>
         ) : (
           <div
@@ -73,9 +84,9 @@ export default function Desktop() {
               onDoubleClick={() => openApp(appId)}
               onClick={() => openApp(appId)}
             >
-              <div className="pixel-folder flex items-center justify-center text-cream">
-                <Icon className="w-6 h-6 relative z-10" strokeWidth={2} />
-              </div>
+              <Win98Folder>
+                <Icon className="w-4 h-4" strokeWidth={1.75} style={{ color: "#1A1410" }} />
+              </Win98Folder>
               <span className="os-icon-label">{label}</span>
             </button>
           );

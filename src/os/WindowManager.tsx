@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback, ReactNode, ComponentType } from "react";
 
-export type AppId = "about" | "experience" | "projects" | "books" | "resume" | "contact" | "settings" | "terminal" | "chatbot";
+export type AppId = "about" | "experience" | "projects" | "books" | "resume" | "contact" | "settings" | "terminal" | "chatbot" | "travel";
 
 export type AppDef = {
   id: AppId;
