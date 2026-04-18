@@ -52,15 +52,6 @@
   [data-theme="blue"]   { --accent-h: 220; --accent-s: 75%; --accent-l: 52%; }
   [data-theme="purple"] { --accent-h: 262; --accent-s: 83%; --accent-l: 58%; }
 
-  /* -- Dark mode (inverts chrome) -- */
-  [data-mode="dark"] {
-    --cream: 245 25% 12%;
-    --cream-soft: 245 20% 18%;
-    --ink: 36 40% 92%;
-    --ink-soft: 36 20% 70%;
-    --bevel-light: 245 20% 28%;
-    --bevel-dark:  245 40% 6%;
-  }
 }
 
 /* Globally kill rounded corners — Win98 is flat + sharp */
@@ -174,17 +165,16 @@
   .window-title {
     @apply flex items-center justify-between px-3 text-[14px] font-medium select-none relative;
     height: 34px;
-    background: linear-gradient(90deg, hsl(var(--accent-deep)) 0%, hsl(var(--accent)) 100%);
+    background: hsl(var(--cream-soft));
     border-bottom: 1px solid hsl(var(--bevel-dark));
-    color: hsl(var(--paper));
+    color: hsl(var(--ink));
     font-family: var(--font-win98);
     cursor: grab;
-    box-shadow: inset 1px 1px 0 0 hsl(var(--bevel-light) / 0.4);
   }
   .window-title:active { cursor: grabbing; }
   .window[data-focused="false"] .window-title {
-    background: hsl(var(--bevel-dark));
-    color: hsl(var(--paper) / 0.7);
+    background: hsl(var(--cream));
+    color: hsl(var(--ink) / 0.55);
   }
 
   .win-btn {

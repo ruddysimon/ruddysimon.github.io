@@ -1,45 +1,77 @@
-import { Mail, Linkedin, Github } from "lucide-react";
+const SERIF = '"Newsreader", Georgia, serif';
 
 const links = [
-  { label: "Email", value: "ruddy.simonpour@gmail.com", href: "mailto:ruddy.simonpour@gmail.com", icon: Mail },
-  { label: "LinkedIn", value: "/in/ruddysimon", href: "https://www.linkedin.com/in/ruddysimon/", icon: Linkedin, external: true },
-  { label: "GitHub", value: "@ruddysimon", href: "https://github.com/ruddysimon", icon: Github, external: true },
+  { label: "Email",    value: "ruddy.simonpour@gmail.com", href: "mailto:ruddy.simonpour@gmail.com" },
+  { label: "LinkedIn", value: "/in/ruddysimon",            href: "https://www.linkedin.com/in/ruddysimon/", external: true },
+  { label: "GitHub",   value: "@ruddysimon",               href: "https://github.com/ruddysimon", external: true },
 ];
+
+const ink = "hsl(var(--ink))";
+const inkSoft = "hsl(var(--ink-soft))";
 
 export default function ContactApp() {
   return (
-    <div className="p-8 md:p-10 max-w-xl">
-      <div className="flex items-center gap-2 mb-4 text-xs text-ink-soft">
-        <span className="chip-os">~/contact</span>
-      </div>
-      <h1 className="text-3xl md:text-4xl mb-2 leading-tight">
-        Say <span className="text-accent">hi.</span>
+    <div
+      className="px-8 py-7 max-w-[560px] mx-auto"
+      style={{ color: ink, fontFamily: SERIF }}
+    >
+      <h1
+        style={{
+          fontFamily: SERIF,
+          fontWeight: 400,
+          fontSize: "34px",
+          letterSpacing: "-0.01em",
+          lineHeight: 1.1,
+        }}
+      >
+        Contact
       </h1>
-      <p className="text-sm text-ink-soft mb-6 leading-relaxed">
+      <p
+        className="mt-1 mb-6"
+        style={{ fontFamily: SERIF, fontSize: "14px", color: inkSoft }}
+      >
         Open to interesting data / ML problems and teams that ship.
       </p>
 
-      <div className="space-y-2">
-        {links.map((l) => {
-          const Icon = l.icon;
-          return (
-            <a
-              key={l.label}
-              href={l.href}
-              target={l.external ? "_blank" : undefined}
-              rel={l.external ? "noopener noreferrer" : undefined}
-              className="flex items-center gap-3 p-3 border border-ink/20 rounded-sm bg-cream-soft hover:border-accent hover:bg-accent/10 transition-colors group"
+      <div className="flex flex-col">
+        {links.map((l, i) => (
+          <a
+            key={l.label}
+            href={l.href}
+            target={l.external ? "_blank" : undefined}
+            rel={l.external ? "noopener noreferrer" : undefined}
+            className="flex items-baseline justify-between gap-6 py-3.5"
+            style={{
+              borderTop: i === 0 ? "1px solid hsl(var(--ink) / 0.18)" : "none",
+              borderBottom: "1px solid hsl(var(--ink) / 0.18)",
+            }}
+          >
+            <span
+              style={{
+                fontFamily: SERIF,
+                fontSize: "13px",
+                color: inkSoft,
+                letterSpacing: "0.04em",
+                minWidth: "90px",
+              }}
             >
-              <div className="w-8 h-8 rounded-sm bg-accent text-cream flex items-center justify-center">
-                <Icon className="w-4 h-4" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="text-xs text-ink-soft uppercase tracking-wide">{l.label}</div>
-                <div className="text-sm text-ink group-hover:text-accent transition-colors truncate">{l.value}</div>
-              </div>
-            </a>
-          );
-        })}
+              {l.label}
+            </span>
+            <span
+              className="flex-1"
+              style={{
+                fontFamily: SERIF,
+                fontSize: "15px",
+                color: ink,
+                textDecoration: "underline",
+                textUnderlineOffset: "3px",
+                textDecorationColor: "hsl(var(--ink) / 0.35)",
+              }}
+            >
+              {l.value}
+            </span>
+          </a>
+        ))}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+const SERIF = '"Newsreader", Georgia, serif';
 
 const paragraphs = [
   "My name is Ruddy Simonpour, and I am a Data Scientist at Rivo Holdings. I design, train, and deploy supervised machine learning systems that support lending decisions and financial services. My work covers every stage of model development — data engineering, feature design, model training and evaluation, API integration, and production deployment.",
@@ -8,25 +8,42 @@ const paragraphs = [
 
 export default function AboutApp() {
   return (
-    <div className="p-8 md:p-10 max-w-3xl">
-      <div className="flex items-center gap-2 mb-4 text-xs text-ink-soft">
-        <span className="chip-os">~/about.txt</span>
-        <span>read-only</span>
-      </div>
-      <h1 className="text-3xl md:text-4xl mb-6 leading-tight">
-        Ruddy Simonpour <span className="text-accent">— Data Scientist.</span>
+    <div
+      className="px-8 py-7 max-w-[720px] mx-auto"
+      style={{ color: "hsl(var(--ink))", fontFamily: SERIF }}
+    >
+      <h1
+        style={{
+          fontFamily: SERIF,
+          fontWeight: 400,
+          fontSize: "34px",
+          letterSpacing: "-0.01em",
+          lineHeight: 1.1,
+        }}
+      >
+        Ruddy Simonpour
       </h1>
-      <div className="space-y-4">
+      <p
+        className="mt-1 mb-6"
+        style={{ fontFamily: SERIF, fontSize: "14px", color: "hsl(var(--ink-soft))" }}
+      >
+        Data Scientist
+      </p>
+
+      <div className="flex flex-col gap-4">
         {paragraphs.map((p, i) => (
-          <motion.p
+          <p
             key={i}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, delay: 0.05 + i * 0.08 }}
-            className="text-sm md:text-[15px] leading-relaxed text-ink-soft"
+            style={{
+              fontFamily: SERIF,
+              fontWeight: 400,
+              fontSize: "15px",
+              lineHeight: 1.6,
+              color: "hsl(var(--ink))",
+            }}
           >
             {p}
-          </motion.p>
+          </p>
         ))}
       </div>
     </div>

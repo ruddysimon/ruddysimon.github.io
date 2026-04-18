@@ -4,6 +4,7 @@ import { useTheme, WALLPAPERS } from "./ThemeContext";
 import Window from "./Window";
 import DesktopWidgets from "./DesktopWidgets";
 import Win98Folder from "./Win98Folder";
+import Win98DocFolder from "./Win98DocFolder";
 
 const DESKTOP_ICONS: { appId: AppId; label: string }[] = [
   { appId: "about", label: "about.txt" },
@@ -76,7 +77,6 @@ export default function Desktop() {
         {DESKTOP_ICONS.map(({ appId, label }) => {
           const app = apps[appId];
           if (!app) return null;
-          const Icon = app.icon;
           return (
             <button
               key={appId}
@@ -84,9 +84,7 @@ export default function Desktop() {
               onDoubleClick={() => openApp(appId)}
               onClick={() => openApp(appId)}
             >
-              <Win98Folder>
-                <Icon className="w-4 h-4" strokeWidth={1.75} style={{ color: "#1A1410" }} />
-              </Win98Folder>
+              {appId === "resume" ? <Win98DocFolder /> : <Win98Folder />}
               <span className="os-icon-label">{label}</span>
             </button>
           );

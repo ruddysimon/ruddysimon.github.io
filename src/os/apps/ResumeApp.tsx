@@ -1,29 +1,74 @@
-import { Download, FileText } from "lucide-react";
-
 export default function ResumeApp() {
   return (
-    <div className="p-8 md:p-10 flex flex-col gap-6">
-      <div className="flex items-center gap-2 text-xs text-ink-soft">
-        <span className="chip-os">~/resume.pdf</span>
-      </div>
+    <div className="p-10 flex flex-col items-center justify-center text-center min-h-full">
+      <PixelDoc />
 
-      <div className="border border-ink/25 rounded-sm p-6 bg-cream-soft max-w-xl">
-        <FileText className="w-8 h-8 text-accent mb-3" />
-        <h1 className="text-2xl md:text-3xl mb-3 leading-tight">
-          Grab the <span className="text-accent">resume.</span>
-        </h1>
-        <p className="text-sm text-ink-soft leading-relaxed mb-5">
-          Full experience, skills, and qualifications — one page, no fluff.
-        </p>
-        <a href="/Ruddy-Simonpour-Resume.pdf" download className="btn-os">
-          <Download className="w-3.5 h-3.5" />
-          Download PDF
-        </a>
-      </div>
+      <h1
+        className="mt-5 mb-2"
+        style={{
+          fontFamily: '"Newsreader", Georgia, serif',
+          fontWeight: 400,
+          fontSize: "32px",
+          color: "hsl(var(--ink))",
+          letterSpacing: "-0.01em",
+        }}
+      >
+        Here is my resume.
+      </h1>
 
-      <div className="text-xs text-ink-soft leading-relaxed">
-        <span className="blink">▊</span> Tip: drag any window by its title bar.
-      </div>
+      <a
+        href="/Ruddy-Simonpour-Resume.pdf"
+        download
+        className="btn-os mt-6"
+        style={{ fontSize: "13px", padding: "8px 20px" }}
+      >
+        Download PDF
+      </a>
     </div>
+  );
+}
+
+/** Tiny pixel-art document — no react-icons, crisp SVG. */
+function PixelDoc() {
+  const ink   = "#1A1410";
+  const paper = "#FFFEFA";
+  const fold  = "#E8DFC8";
+  const line  = "#1A1410";
+
+  return (
+    <svg
+      viewBox="0 0 40 52"
+      width="56"
+      height="72"
+      shapeRendering="crispEdges"
+      style={{ display: "block" }}
+    >
+      {/* shadow */}
+      <rect x="3" y="4" width="34" height="46" fill={ink} opacity="0.25" />
+
+      {/* page body */}
+      <rect x="2" y="2" width="33" height="46" fill={paper} />
+
+      {/* folded top-right corner */}
+      <polygon points="35,2 35,12 25,2" fill={paper} />
+      <polygon points="25,2 35,12 25,12" fill={fold} />
+      {/* fold outline */}
+      <rect x="25" y="2" width="1" height="10" fill={ink} />
+      <rect x="25" y="11" width="10" height="1" fill={ink} />
+
+      {/* text lines */}
+      <rect x="6"  y="16" width="20" height="1" fill={line} opacity="0.8" />
+      <rect x="6"  y="20" width="24" height="1" fill={line} opacity="0.5" />
+      <rect x="6"  y="23" width="22" height="1" fill={line} opacity="0.5" />
+      <rect x="6"  y="26" width="25" height="1" fill={line} opacity="0.5" />
+      <rect x="6"  y="30" width="18" height="1" fill={line} opacity="0.5" />
+      <rect x="6"  y="33" width="23" height="1" fill={line} opacity="0.5" />
+      <rect x="6"  y="36" width="20" height="1" fill={line} opacity="0.5" />
+      <rect x="6"  y="39" width="24" height="1" fill={line} opacity="0.5" />
+      <rect x="6"  y="42" width="16" height="1" fill={line} opacity="0.5" />
+
+      {/* page outline */}
+      <rect x="2" y="2" width="33" height="46" fill="none" stroke={ink} strokeWidth="1" />
+    </svg>
   );
 }

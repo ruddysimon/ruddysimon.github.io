@@ -54,7 +54,7 @@ export default function ChatbotApp() {
     <div className="flex flex-col h-full">
       <div className="px-5 py-3 border-b border-ink/15 bg-cream-soft">
         <div className="text-sm font-semibold leading-tight">Simon</div>
-        <div className="text-[10px] text-ink-soft">usually replies in seconds · keyword-based demo</div>
+        <div className="text-[10px] text-ink-soft">usually replies in seconds</div>
       </div>
 
       <div ref={scrollRef} className="flex-1 overflow-auto p-4 space-y-3 win-scroll">

@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
 export type ThemeColor = "orange" | "green" | "blue" | "purple";
-export type ThemeMode = "light" | "dark";
 export type Overlay = "none" | "dots" | "scan";
 
 export const THEME_COLORS: { id: ThemeColor; label: string; swatch: string }[] = [
@@ -31,11 +30,9 @@ export type WallpaperId = typeof WALLPAPERS[number]["id"];
 
 type ThemeCtx = {
   color: ThemeColor;
-  mode: ThemeMode;
   wallpaper: string;
   overlay: Overlay;
   setColor: (c: ThemeColor) => void;
-  setMode: (m: ThemeMode) => void;
   setWallpaper: (w: string) => void;
   setOverlay: (o: Overlay) => void;
 };
@@ -46,7 +43,6 @@ const STORAGE_KEY = "ruddyos.theme";
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [color, setColor] = useState<ThemeColor>("orange");
-  const [mode, setMode] = useState<ThemeMode>("light");
   const [wallpaper, setWallpaper] = useState<string>("vid-1");
   const [overlay, setOverlay] = useState<Overlay>("none");
 
@@ -56,7 +52,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       if (raw) {
         const saved = JSON.parse(raw);
         if (saved.color) setColor(saved.color);
-        if (saved.mode) setMode(saved.mode);
         if (saved.wallpaper) setWallpaper(saved.wallpaper);
         if (saved.overlay) setOverlay(saved.overlay);
       }
@@ -65,14 +60,13 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.dataset.theme = color;
-    document.documentElement.dataset.mode = mode;
     document.documentElement.dataset.wallpaper = wallpaper;
     document.documentElement.dataset.overlay = overlay;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ color, mode, wallpaper, overlay }));
-  }, [color, mode, wallpaper, overlay]);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ color, wallpaper, overlay }));
+  }, [color, wallpaper, overlay]);
 
   return (
-    <ThemeContext.Provider value={{ color, mode, wallpaper, overlay, setColor, setMode, setWallpaper, setOverlay }}>
+    <ThemeContext.Provider value={{ color, wallpaper, overlay, setColor, setWallpaper, setOverlay }}>
       {children}
     </ThemeContext.Provider>
   );

@@ -1,4 +1,4 @@
-import { useTheme, THEME_COLORS, WALLPAPERS, ThemeColor, ThemeMode, Overlay } from "../ThemeContext";
+import { useTheme, THEME_COLORS, WALLPAPERS, ThemeColor, Overlay } from "../ThemeContext";
 import { Play, Image } from "lucide-react";
 
 const SERIF = '"Newsreader", Georgia, "Times New Roman", serif';
@@ -10,7 +10,7 @@ const OVERLAYS: { id: Overlay; label: string }[] = [
 ];
 
 export default function SettingsApp() {
-  const { color, mode, wallpaper, overlay, setColor, setMode, setWallpaper, setOverlay } = useTheme();
+  const { color, wallpaper, overlay, setColor, setWallpaper, setOverlay } = useTheme();
 
   return (
     <div
@@ -31,27 +31,6 @@ export default function SettingsApp() {
       </h1>
 
       <Card title="Appearance">
-        <Label>Theme mode</Label>
-        <div className="flex gap-2 mb-5">
-          {(["light", "dark"] as ThemeMode[]).map((m) => (
-            <button
-              key={m}
-              onClick={() => setMode(m)}
-              className="px-5 py-1.5 rounded-sm transition-colors"
-              style={{
-                fontFamily: SERIF,
-                fontWeight: 400,
-                fontSize: "14px",
-                background: mode === m ? "hsl(var(--accent))" : "hsl(var(--cream-soft))",
-                color: mode === m ? "hsl(var(--paper))" : "hsl(var(--ink))",
-                border: `1px solid ${mode === m ? "hsl(var(--accent))" : "hsl(var(--ink) / 0.25)"}`,
-              }}
-            >
-              {m === "light" ? "Light" : "Dark"}
-            </button>
-          ))}
-        </div>
-
         <Label>Theme color</Label>
         <div className="flex flex-wrap gap-2">
           {THEME_COLORS.map((c) => {

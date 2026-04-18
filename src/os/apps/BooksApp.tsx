@@ -1,5 +1,4 @@
-import { motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
+const SERIF = '"Newsreader", Georgia, serif';
 
 const books = [
   {
@@ -21,53 +20,123 @@ const books = [
   },
 ];
 
+const ink = "hsl(var(--ink))";
+const inkSoft = "hsl(var(--ink-soft))";
+
 export default function BooksApp() {
   return (
-    <div className="p-8 md:p-10">
-      <div className="flex items-center gap-2 mb-4 text-xs text-ink-soft">
-        <span className="chip-os">~/library</span>
-      </div>
-      <h1 className="text-3xl md:text-4xl mb-6 leading-tight">
-        On the <span className="text-accent">shelf.</span>
+    <div
+      className="px-8 py-7 max-w-[760px] mx-auto"
+      style={{ color: ink, fontFamily: SERIF }}
+    >
+      <h1
+        style={{
+          fontFamily: SERIF,
+          fontWeight: 400,
+          fontSize: "34px",
+          letterSpacing: "-0.01em",
+          lineHeight: 1.1,
+        }}
+      >
+        Library
       </h1>
+      <p
+        className="mt-1 mb-6"
+        style={{ fontFamily: SERIF, fontSize: "14px", color: inkSoft }}
+      >
+        Currently reading and often revisiting.
+      </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {books.map((book, i) => (
-          <motion.article
+          <article
             key={i}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, delay: 0.05 + i * 0.08 }}
-            className="border border-ink/25 rounded-sm p-4 bg-cream-soft"
+            className="p-4"
+            style={{
+              background: "hsl(var(--surface))",
+              border: "1px solid hsl(var(--ink) / 0.18)",
+            }}
           >
-            <div className="w-full mb-3 rounded-sm overflow-hidden border border-ink/20 bg-surface relative" style={{ paddingBottom: "120%" }}>
-              <div className="absolute inset-0">
-                {book.imageUrl ? (
-                  <img src={book.imageUrl} alt={book.title} className="h-full w-full object-contain" />
-                ) : (
-                  <div className="h-full w-full flex items-center justify-center bg-accent/20 text-4xl">📚</div>
-                )}
-              </div>
+            <div className="w-full mb-4 overflow-hidden relative" style={{ paddingBottom: "110%" }}>
+              <img
+                src={book.imageUrl}
+                alt={book.title}
+                className="absolute inset-0 h-full w-full object-contain"
+              />
             </div>
-            <h3 className="text-base font-semibold leading-tight mb-1">{book.title}</h3>
-            <p className="text-xs text-accent mb-2">by {book.author}</p>
-            <p className="text-xs leading-relaxed text-ink-soft mb-3">{book.description}</p>
+
+            <h3
+              style={{
+                fontFamily: SERIF,
+                fontWeight: 400,
+                fontSize: "17px",
+                lineHeight: 1.25,
+                color: ink,
+              }}
+            >
+              {book.title}
+            </h3>
+            <p
+              style={{
+                fontFamily: SERIF,
+                fontSize: "13px",
+                color: inkSoft,
+                marginTop: "2px",
+              }}
+            >
+              by {book.author}
+            </p>
+            <p
+              className="mt-2.5"
+              style={{
+                fontFamily: SERIF,
+                fontSize: "14px",
+                lineHeight: 1.55,
+                color: ink,
+              }}
+            >
+              {book.description}
+            </p>
+
             {book.websiteUrl && (
               <a
                 href={book.websiteUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs font-medium text-accent hover:underline mb-3"
+                className="inline-block mt-3"
+                style={{
+                  fontFamily: SERIF,
+                  fontSize: "13px",
+                  color: ink,
+                  textDecoration: "underline",
+                  textUnderlineOffset: "3px",
+                }}
               >
-                Download free PDF <ExternalLink className="w-3 h-3" />
+                Download free PDF ↗
               </a>
             )}
-            <div className="flex flex-wrap gap-1 pt-3 border-t border-ink/10">
+
+            <div
+              className="flex flex-wrap gap-1.5 mt-4 pt-3"
+              style={{ borderTop: "1px solid hsl(var(--ink) / 0.12)" }}
+            >
               {book.keyTopics.map((t) => (
-                <span key={t} className="chip-os">{t}</span>
+                <span
+                  key={t}
+                  style={{
+                    fontFamily: SERIF,
+                    fontSize: "11px",
+                    padding: "1px 8px",
+                    background: "hsl(var(--cream))",
+                    border: "1px solid hsl(var(--ink) / 0.22)",
+                    color: ink,
+                  }}
+                >
+                  {t}
+                </span>
               ))}
             </div>
-          </motion.article>
+          </article>
         ))}
       </div>
     </div>
