@@ -5,6 +5,7 @@ import Window from "./Window";
 import DesktopWidgets from "./DesktopWidgets";
 import Win98Folder from "./Win98Folder";
 import Win98DocFolder from "./Win98DocFolder";
+import Win98TextFile from "./Win98TextFile";
 
 const DESKTOP_ICONS: { appId: AppId; label: string }[] = [
   { appId: "about", label: "about.txt" },
@@ -12,6 +13,7 @@ const DESKTOP_ICONS: { appId: AppId; label: string }[] = [
   { appId: "projects", label: "projects" },
   { appId: "books", label: "library" },
   { appId: "travel", label: "travel" },
+  { appId: "games", label: "games" },
   { appId: "resume", label: "resume.pdf" },
   { appId: "contact", label: "contact" },
 ];
@@ -33,7 +35,7 @@ export default function Desktop() {
   const isVideo = wp?.kind === "video";
 
   return (
-    <div className="fixed inset-0 pt-9 pb-20 overflow-hidden">
+    <div className="fixed inset-0 pb-12 overflow-hidden">
       {/* Wallpaper layer */}
       <div className="absolute inset-0 -z-10">
         {isVideo && wp && "src" in wp ? (
@@ -84,7 +86,13 @@ export default function Desktop() {
               onDoubleClick={() => openApp(appId)}
               onClick={() => openApp(appId)}
             >
-              {appId === "resume" ? <Win98DocFolder /> : <Win98Folder />}
+              {appId === "resume" ? (
+                <Win98DocFolder />
+              ) : appId === "about" ? (
+                <Win98TextFile />
+              ) : (
+                <Win98Folder />
+              )}
               <span className="os-icon-label">{label}</span>
             </button>
           );

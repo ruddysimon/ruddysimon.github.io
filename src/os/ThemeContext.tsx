@@ -24,6 +24,7 @@ export const WALLPAPERS = [
   { id: "amalfi-3",  label: "Amalfi III",    kind: "image" as const, src: "/travel/amalfi%20coast/3.jpg" },
   { id: "vibe-1",    label: "Vibe I",        kind: "image" as const, src: "/travel/vibe/caroline-badran-Qe8eMrwTW5g-unsplash.jpg" },
   { id: "vibe-2",    label: "Vibe II",       kind: "image" as const, src: "/travel/vibe/clay-banks-HiIo-viWU40-unsplash.jpg" },
+  { id: "vibe-3",    label: "Vibe III",      kind: "image" as const, src: "/travel/vibe/98.jpg" },
 ];
 
 export type WallpaperId = typeof WALLPAPERS[number]["id"];
@@ -43,7 +44,7 @@ const STORAGE_KEY = "ruddyos.theme";
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [color, setColor] = useState<ThemeColor>("orange");
-  const [wallpaper, setWallpaper] = useState<string>("vid-1");
+  const [wallpaper, setWallpaper] = useState<string>("amalfi-1");
   const [overlay, setOverlay] = useState<Overlay>("none");
 
   useEffect(() => {

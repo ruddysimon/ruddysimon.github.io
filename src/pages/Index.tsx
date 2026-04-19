@@ -3,9 +3,8 @@ import { motion } from "framer-motion";
 import { ThemeProvider } from "@/os/ThemeContext";
 import { WindowManagerProvider } from "@/os/WindowManager";
 import { APPS } from "@/os/apps/registry";
-import MenuBar from "@/os/MenuBar";
 import Desktop from "@/os/Desktop";
-import Dock from "@/os/Dock";
+import Taskbar from "@/os/Taskbar";
 import BootScreen from "@/os/BootScreen";
 
 export default function Index() {
@@ -22,9 +21,8 @@ export default function Index() {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="absolute inset-0"
           >
-            <MenuBar />
             <Desktop />
-            <Dock />
+            <Taskbar />
           </motion.div>
         </div>
       </WindowManagerProvider>

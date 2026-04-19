@@ -11,15 +11,16 @@
 
 @layer base {
   :root {
-    /* Neutrals — proper khaki/tan chrome like old Win98 "Desert" theme */
-    --cream: 38 26% 78%;           /* real khaki */
-    --cream-soft: 40 28% 85%;      /* lighter khaki for inside surfaces */
+    /* Neutrals — unified peach-cream (#FFEEDD) everywhere */
+    --cream: 30 100% 93%;          /* #FFEEDD — the one chrome color */
+    --cream-soft: 30 100% 93%;     /* same as cream so surfaces stay uniform */
+    --title-bar: 30 70% 86%;       /* slightly deeper shade for window headers only */
     --ink: 245 40% 14%;            /* #1A1832 text */
     --ink-soft: 245 15% 38%;       /* muted text */
 
     /* 3D bevel helpers — Win98 style highlight + shadow */
-    --bevel-light: 40 35% 94%;     /* top-left highlight */
-    --bevel-dark:  35 18% 52%;     /* bottom-right shadow */
+    --bevel-light: 30 100% 97%;    /* near-white top-left highlight (still reads peach) */
+    --bevel-dark:  28 22% 52%;     /* warm gray bottom-right shadow */
 
     /* Wallpaper-layer text — does NOT flip in dark mode */
     --paper: 40 30% 92%;           /* always-light khaki cream */
@@ -150,22 +151,22 @@
   .window {
     background: hsl(var(--surface));
     color: hsl(var(--surface-foreground));
-    border: 2px solid hsl(var(--bevel-dark));
+    border: 4px solid hsl(var(--bevel-dark));
     border-top-color: hsl(var(--bevel-light));
     border-left-color: hsl(var(--bevel-light));
     border-radius: 0;
     box-shadow:
-      inset -1px -1px 0 0 hsl(var(--ink) / 0.5),
-      inset 1px 1px 0 0 hsl(var(--bevel-light)),
-      2px 2px 0 0 hsl(var(--ink) / 0.4),
-      4px 4px 0 0 hsl(var(--ink) / 0.2);
+      inset -2px -2px 0 0 hsl(var(--ink) / 0.45),
+      inset 2px 2px 0 0 hsl(var(--bevel-light)),
+      3px 3px 0 0 hsl(var(--ink) / 0.45),
+      6px 6px 0 0 hsl(var(--ink) / 0.22);
     overflow: hidden;
   }
 
   .window-title {
     @apply flex items-center justify-between px-3 text-[14px] font-medium select-none relative;
     height: 34px;
-    background: hsl(var(--cream-soft));
+    background: hsl(var(--title-bar));
     border-bottom: 1px solid hsl(var(--bevel-dark));
     color: hsl(var(--ink));
     font-family: var(--font-win98);
@@ -177,13 +178,26 @@
     color: hsl(var(--ink) / 0.55);
   }
 
-  .win-btn {
-    @apply w-3.5 h-3.5 rounded-full border;
-    border-color: hsl(var(--ink) / 0.3);
+  /* Win98-style square title-bar controls */
+  .win-ctrl {
+    @apply inline-flex items-center justify-center;
+    width: 26px;
+    height: 22px;
+    background: hsl(var(--cream));
+    border: 2px solid hsl(var(--bevel-light));
+    border-right-color: hsl(var(--bevel-dark));
+    border-bottom-color: hsl(var(--bevel-dark));
+    color: hsl(var(--ink));
+    box-shadow: inset -1px -1px 0 0 hsl(var(--ink) / 0.4), inset 1px 1px 0 0 hsl(var(--cream-soft));
+    cursor: pointer;
   }
-  .win-btn-close    { background: hsl(0 75% 62%); }
-  .win-btn-minimize { background: hsl(44 90% 58%); }
-  .win-btn-maximize { background: hsl(140 50% 52%); }
+  .win-ctrl:active {
+    border-color: hsl(var(--bevel-dark));
+    border-right-color: hsl(var(--bevel-light));
+    border-bottom-color: hsl(var(--bevel-light));
+    box-shadow: inset 1px 1px 0 0 hsl(var(--ink) / 0.4);
+  }
+  .win-ctrl-close:hover { background: hsl(0 70% 60%); color: #fff; }
 
   /* Menubar */
   .menubar {

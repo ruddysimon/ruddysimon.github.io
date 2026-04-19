@@ -1,4 +1,4 @@
-import { User, Briefcase, FolderGit2, BookOpen, FileText, Mail, Settings, TerminalSquare, Plane } from "lucide-react";
+import { User, Briefcase, FolderGit2, BookOpen, FileText, Mail, Settings, TerminalSquare, Plane, Gamepad2 } from "lucide-react";
 import { AppDef, AppId } from "../WindowManager";
 import AboutApp from "./AboutApp";
 import ExperienceApp from "./ExperienceApp";
@@ -10,6 +10,7 @@ import SettingsApp from "./SettingsApp";
 import TerminalApp from "./TerminalApp";
 import ChatbotApp from "./ChatbotApp";
 import TravelApp from "./TravelApp";
+import GamesApp from "./GamesApp";
 import HappyMacIcon from "./HappyMacIcon";
 
 export const APPS: Record<AppId, AppDef> = {
@@ -18,7 +19,8 @@ export const APPS: Record<AppId, AppDef> = {
   projects:   { id: "projects",   title: "projects",    icon: FolderGit2,     Component: ProjectsApp,   defaultSize: { w: 780, h: 560 } },
   books:      { id: "books",      title: "library",     icon: BookOpen,       Component: BooksApp,      defaultSize: { w: 820, h: 600 } },
   travel:     { id: "travel",     title: "travel",      icon: Plane,          Component: TravelApp,     defaultSize: { w: 720, h: 560 } },
-  resume:     { id: "resume",     title: "resume.pdf",  icon: FileText,       Component: ResumeApp,     defaultSize: { w: 560, h: 420 } },
+  games:      { id: "games",      title: "games",       icon: Gamepad2,       Component: GamesApp,      defaultSize: { w: 640, h: 600 } },
+  resume:     { id: "resume",     title: "resume.pdf",  icon: FileText,       Component: ResumeApp,     defaultSize: { w: 820, h: 900 } },
   contact:    { id: "contact",    title: "contact",     icon: Mail,           Component: ContactApp,    defaultSize: { w: 520, h: 440 } },
   terminal:   { id: "terminal",   title: "terminal",    icon: TerminalSquare, Component: TerminalApp,   defaultSize: { w: 620, h: 400 } },
   chatbot:    { id: "chatbot",    title: "Simon",       icon: HappyMacIcon,   Component: ChatbotApp,    defaultSize: { w: 500, h: 580 } },

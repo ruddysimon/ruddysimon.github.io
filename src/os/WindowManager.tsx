@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback, ReactNode, ComponentType } from "react";
 
-export type AppId = "about" | "experience" | "projects" | "books" | "resume" | "contact" | "settings" | "terminal" | "chatbot" | "travel";
+export type AppId = "about" | "experience" | "projects" | "books" | "resume" | "contact" | "settings" | "terminal" | "chatbot" | "travel" | "games";
 
 export type AppDef = {
   id: AppId;
@@ -71,11 +71,10 @@ export function WindowManagerProvider({
       const z = ++nextZ;
       const size = app.defaultSize ?? { w: 720, h: 520 };
 
-      // Center on viewport (respecting menubar + dock), with a slight cascade offset.
-      const menubarH = 36;
-      const dockH = 72;
+      // Center on viewport (respecting the bottom taskbar), with a slight cascade offset.
+      const taskbarH = 42;
       const centerX = Math.max(16, (window.innerWidth - size.w) / 2);
-      const centerY = Math.max(menubarH + 12, (window.innerHeight - size.h - dockH) / 2);
+      const centerY = Math.max(12, (window.innerHeight - taskbarH - size.h) / 2);
       const offset = (prev.length * 24) % 80;
       const pos = app.defaultPosition ?? {
         x: centerX + offset,

@@ -78,33 +78,32 @@ export default function Window({ win, children }: { win: WindowState; children: 
         onPointerDown={startDrag}
         onDoubleClick={() => toggleMaximize(win.id)}
       >
-        <div className="flex items-center gap-1.5">
+        <div className="font-medium tracking-wide truncate pr-2 pointer-events-none">
+          {win.title}
+        </div>
+        <div className="flex items-center gap-1">
           <button
-            className="win-btn win-btn-close flex items-center justify-center group"
-            onClick={(e) => { e.stopPropagation(); closeWindow(win.id); }}
-            aria-label="Close"
-          >
-            <X className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100" strokeWidth={3} />
-          </button>
-          <button
-            className="win-btn win-btn-minimize flex items-center justify-center group"
+            className="win-ctrl"
             onClick={(e) => { e.stopPropagation(); toggleMinimize(win.id); }}
             aria-label="Minimize"
           >
-            <Minus className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100" strokeWidth={3} />
+            <Minus className="w-[18px] h-[18px]" strokeWidth={2.5} />
           </button>
           <button
-            className="win-btn win-btn-maximize flex items-center justify-center group"
+            className="win-ctrl"
             onClick={(e) => { e.stopPropagation(); toggleMaximize(win.id); }}
             aria-label="Maximize"
           >
-            <Square className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100" strokeWidth={3} />
+            <Square className="w-[15px] h-[15px]" strokeWidth={2.5} />
+          </button>
+          <button
+            className="win-ctrl win-ctrl-close"
+            onClick={(e) => { e.stopPropagation(); closeWindow(win.id); }}
+            aria-label="Close"
+          >
+            <X className="w-[18px] h-[18px]" strokeWidth={2.5} />
           </button>
         </div>
-        <div className="absolute left-1/2 -translate-x-1/2 font-medium tracking-wide pointer-events-none">
-          {win.title}
-        </div>
-        <div className="w-16" />
       </div>
 
       <div className="win-scroll overflow-auto h-[calc(100%-36px)] bg-surface text-surface-foreground">
