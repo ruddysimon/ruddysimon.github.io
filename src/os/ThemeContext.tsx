@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 
 export type ThemeColor = "orange" | "green" | "blue" | "purple";
 export type Overlay = "none" | "dots" | "scan";
+export type Shuffle = "off" | "videos" | "photos";
 
 export const THEME_COLORS: { id: ThemeColor; label: string; swatch: string }[] = [
   { id: "orange", label: "Orange", swatch: "hsl(18 82% 54%)" },
@@ -14,6 +15,7 @@ export const WALLPAPERS = [
   { id: "solid",    label: "Solid color",  kind: "color" as const },
   { id: "vid-1",    label: "Sunset coast", kind: "video" as const, src: "/background-video.mp4" },
   { id: "vid-2",    label: "Ocean waves",  kind: "video" as const, src: "/background-video1.mp4" },
+  { id: "vid-3",    label: "Drift",        kind: "video" as const, src: "/background-video2.mp4" },
   { id: "iran-1",   label: "Iran I",       kind: "image" as const, src: "/travel/iran/1.jpg" },
   { id: "iran-2",   label: "Iran II",      kind: "image" as const, src: "/travel/iran/2.jpg" },
   { id: "egypt-1",  label: "Egypt I",      kind: "image" as const, src: "/travel/egypt/lea-kobal-UlHxDEtBDM0-unsplash.jpg" },
@@ -33,9 +35,11 @@ type ThemeCtx = {
   color: ThemeColor;
   wallpaper: string;
   overlay: Overlay;
+  shuffle: Shuffle;
   setColor: (c: ThemeColor) => void;
   setWallpaper: (w: string) => void;
   setOverlay: (o: Overlay) => void;
+  setShuffle: (s: Shuffle) => void;
 };
 
 const ThemeContext = createContext<ThemeCtx | null>(null);
@@ -46,6 +50,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [color, setColor] = useState<ThemeColor>("orange");
   const [wallpaper, setWallpaper] = useState<string>("amalfi-1");
   const [overlay, setOverlay] = useState<Overlay>("none");
+  const [shuffle, setShuffle] = useState<Shuffle>("off");
 
   useEffect(() => {
     try {
@@ -55,6 +60,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         if (saved.color) setColor(saved.color);
         if (saved.wallpaper) setWallpaper(saved.wallpaper);
         if (saved.overlay) setOverlay(saved.overlay);
+        if (saved.shuffle) setShuffle(saved.shuffle);
       }
     } catch {}
   }, []);
@@ -63,11 +69,27 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     document.documentElement.dataset.theme = color;
     document.documentElement.dataset.wallpaper = wallpaper;
     document.documentElement.dataset.overlay = overlay;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ color, wallpaper, overlay }));
-  }, [color, wallpaper, overlay]);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ color, wallpaper, overlay, shuffle }));
+  }, [color, wallpaper, overlay, shuffle]);
+
+  // Shuffle timer — rotate through the selected pool on an interval
+  useEffect(() => {
+    if (shuffle === "off") return;
+    const targetKind = shuffle === "videos" ? "video" : "image";
+    const pool = WALLPAPERS.filter((w) => w.kind === targetKind);
+    if (pool.length <= 1) return;
+    const id = setInterval(() => {
+      setWallpaper((prev) => {
+        const idx = pool.findIndex((p) => p.id === prev);
+        const next = pool[(idx + 1) % pool.length] ?? pool[0];
+        return next.id;
+      });
+    }, 7_000);
+    return () => clearInterval(id);
+  }, [shuffle]);
 
   return (
-    <ThemeContext.Provider value={{ color, wallpaper, overlay, setColor, setWallpaper, setOverlay }}>
+    <ThemeContext.Provider value={{ color, wallpaper, overlay, shuffle, setColor, setWallpaper, setOverlay, setShuffle }}>
       {children}
     </ThemeContext.Provider>
   );

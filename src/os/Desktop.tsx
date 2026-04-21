@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useWM, AppId } from "./WindowManager";
 import { useTheme, WALLPAPERS } from "./ThemeContext";
 import Window from "./Window";
@@ -37,39 +38,48 @@ export default function Desktop() {
   return (
     <div className="fixed inset-0 pb-12 overflow-hidden">
       {/* Wallpaper layer */}
-      <div className="absolute inset-0 -z-10">
-        {isVideo && wp && "src" in wp ? (
-          <>
-            <video
-              key={wp.src}
-              src={wp.src}
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-accent/45 mix-blend-multiply" />
-            <div className="absolute inset-0 bg-ink/20" />
-          </>
-        ) : wp?.kind === "image" && "src" in wp ? (
-          <>
-            <img
-              key={wp.src}
-              src={wp.src}
-              alt=""
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-ink/30" />
-          </>
-        ) : (
-          <div
-            className="w-full h-full"
-            style={{ background: "hsl(var(--accent))" }}
-          />
-        )}
+      <div className="absolute inset-0 -z-10 bg-black">
+        <AnimatePresence mode="sync">
+          <motion.div
+            key={wp?.id ?? "solid"}
+            className="absolute inset-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.6, ease: "easeInOut" }}
+          >
+            {isVideo && wp && "src" in wp ? (
+              <>
+                <video
+                  src={wp.src}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-accent/45 mix-blend-multiply" />
+                <div className="absolute inset-0 bg-ink/20" />
+              </>
+            ) : wp?.kind === "image" && "src" in wp ? (
+              <>
+                <img
+                  src={wp.src}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-ink/30" />
+              </>
+            ) : (
+              <div
+                className="w-full h-full"
+                style={{ background: "hsl(var(--accent))" }}
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
 
-        {/* Pattern overlay — sits ON TOP of the active wallpaper (video or solid) */}
+        {/* Pattern overlay — sits ON TOP of the active wallpaper */}
         {overlay === "dots" && <div className="absolute inset-0 wallpaper-noise pointer-events-none" />}
         {overlay === "scan" && <div className="absolute inset-0 wallpaper-scan pointer-events-none" />}
       </div>

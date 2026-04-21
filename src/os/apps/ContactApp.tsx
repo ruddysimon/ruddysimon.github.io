@@ -30,7 +30,6 @@ export default function ContactApp() {
         className="mt-1 mb-6"
         style={{ fontFamily: SERIF, fontSize: "14px", color: inkSoft }}
       >
-        Open to interesting data / ML problems and teams that ship.
       </p>
 
       <div className="flex flex-col">

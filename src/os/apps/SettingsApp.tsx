@@ -1,5 +1,5 @@
-import { useTheme, THEME_COLORS, WALLPAPERS, ThemeColor, Overlay } from "../ThemeContext";
-import { Play, Image } from "lucide-react";
+import { useTheme, THEME_COLORS, WALLPAPERS, ThemeColor, Overlay, Shuffle } from "../ThemeContext";
+import { Play, Image, Shuffle as ShuffleIcon, Video, Images } from "lucide-react";
 
 const SERIF = '"Newsreader", Georgia, "Times New Roman", serif';
 
@@ -9,8 +9,14 @@ const OVERLAYS: { id: Overlay; label: string }[] = [
   { id: "scan", label: "Scanlines" },
 ];
 
+const SHUFFLE_OPTIONS: { id: Shuffle; label: string }[] = [
+  { id: "off",    label: "Off" },
+  { id: "videos", label: "Shuffle videos" },
+  { id: "photos", label: "Shuffle photos" },
+];
+
 export default function SettingsApp() {
-  const { color, wallpaper, overlay, setColor, setWallpaper, setOverlay } = useTheme();
+  const { color, wallpaper, overlay, shuffle, setColor, setWallpaper, setOverlay, setShuffle } = useTheme();
 
   return (
     <div
@@ -150,6 +156,40 @@ export default function SettingsApp() {
               </button>
             );
           })}
+        </div>
+
+        <div className="mt-6">
+          <Label>Shuffle mode</Label>
+          <div className="flex flex-wrap gap-2">
+            {SHUFFLE_OPTIONS.map((s) => {
+              const selected = shuffle === s.id;
+              const Icon = s.id === "videos" ? Video : s.id === "photos" ? Images : ShuffleIcon;
+              return (
+                <button
+                  key={s.id}
+                  onClick={() => setShuffle(s.id)}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-sm transition-colors"
+                  style={{
+                    fontFamily: SERIF,
+                    fontWeight: 400,
+                    fontSize: "14px",
+                    background: selected ? "hsl(var(--accent))" : "hsl(var(--cream-soft))",
+                    color: selected ? "hsl(var(--paper))" : "hsl(var(--ink))",
+                    border: `1px solid ${selected ? "hsl(var(--accent))" : "hsl(var(--ink) / 0.25)"}`,
+                  }}
+                >
+                  <Icon className="w-[14px] h-[14px]" />
+                  {s.label}
+                </button>
+              );
+            })}
+          </div>
+          <p
+            className="mt-2.5"
+            style={{ fontFamily: SERIF, fontSize: "12px", fontStyle: "italic", color: "hsl(var(--ink-soft))" }}
+          >
+            Rotates through the selected pool every 7 seconds with a smooth crossfade.
+          </p>
         </div>
 
         <div className="mt-6">
