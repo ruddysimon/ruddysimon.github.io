@@ -54,3 +54,10 @@ out
 .next
 .nuxt
 .cache
+
+# Vercel local scratch
+.vercel
+
+# Ask Simon private source (embeddings in public/ask-simon.json are committed)
+content/simon.md
+

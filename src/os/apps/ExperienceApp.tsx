@@ -1,9 +1,10 @@
 const SERIF = '"Newsreader", Georgia, serif';
 
 const CURRENT_FOCUS = [
-  "Designing and deploying ML systems that automate lending and risk decisions at Rivo Holdings.",
-  "Maintaining production model health with Tableau drift + misclassification dashboards.",
-  "Exploring LangChain + retrieval pipelines for internal LLM tooling.",
+  "Real-time XGBoost credit risk models for underwriting — tuned with Optuna, cutting default rates from 15% to 12%.",
+  "BERT-based NLP classifier replacing brittle rule-based logic on noisy transaction data (~93–95% accuracy).",
+  "Leading an in-house LLM-based underwriting pilot: fine-tuning a 7–8B open-source model (Mistral / LLaMA 3.1) with QLoRA to reason over transactions and customer behavior.",
+  "Automation infrastructure for low-risk segments — end-to-end decisioning without manual underwriting.",
 ];
 
 type Entry = {
@@ -31,10 +32,10 @@ const TIMELINE: Entry[] = [
     logo: "/rivo.jpeg",
     current: true,
     description:
-      "Build and deploy ML systems that automate decision-making across the platform. Designed a full-stack app (React, Next.js, Flask) backed by hybrid XGBoost / CatBoost / Random Forest models to predict risk. Monitor drift and misclassification with Tableau dashboards so the models stay trustworthy in production.",
+      "Developed and deployed a real-time XGBoost credit risk model for underwriting, tuned with Optuna — precision/recall up 15% and default rates down from 15% to 12%. Replaced rule-based transaction classification with a BERT-based NLP model (~93–95% accuracy). Now leading an in-house LLM-based underwriting system, fine-tuning a 7–8B open-source model (Mistral / LLaMA 3.1) with QLoRA. Built the loan decisioning automation that routes only edge cases to analysts at 92–95% accuracy.",
   },
   {
-    title: "Data Analyst I",
+    title: "Jr. Data Scientist",
     company: "Rivo Holdings LLC",
     employment: "Full-time",
     period: "Feb 2024 – Mar 2025",
@@ -43,7 +44,7 @@ const TIMELINE: Entry[] = [
     mode: "On-site",
     logo: "/rivo.jpeg",
     description:
-      "Automated cross-department data pipelines and built Tableau dashboards on top of SQL stored procedures. Created an early-warning system to flag critical data patterns and clean noisy model inputs.",
+      "Designed a data pipeline to backfill historical model features stored as JSON — enabling consistent correlation analysis, drift monitoring, and A/B testing across model versions. Transitioned a credit risk model off a vendor-managed Shiny app onto an in-house ML platform (Flask, React, Azure, CI/CD), improving reliability and lowering cost.",
   },
   {
     title: "Data Analyst",

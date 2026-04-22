@@ -7,46 +7,60 @@ type Cell = {
   flagged: boolean;
 };
 
-const ROWS = 9;
-const COLS = 9;
-const MINES = 10;
+type Diff = "beginner" | "intermediate" | "expert";
+const LEVELS: Record<Diff, { rows: number; cols: number; mines: number; label: string }> = {
+  beginner:     { rows: 9,  cols: 9,  mines: 10, label: "Beginner" },
+  intermediate: { rows: 16, cols: 16, mines: 40, label: "Intermediate" },
+  expert:       { rows: 16, cols: 30, mines: 99, label: "Expert" },
+};
+
 const CELL_SIZE = 26;
+const BEST_KEY = "ruddyos.minesweeper.best";
 
 const NUM_COLORS = ["", "#1D4FD8", "#1F7A1F", "#D01B1B", "#1A1466", "#7A1B1B", "#1F7A7A", "#000", "#666"];
 
-function emptyGrid(): Cell[][] {
-  return Array.from({ length: ROWS }, () =>
-    Array.from({ length: COLS }, () => ({
-      isMine: false,
-      adjacent: 0,
-      revealed: false,
-      flagged: false,
+function loadBest(): Record<Diff, number | null> {
+  try {
+    const raw = localStorage.getItem(BEST_KEY);
+    if (raw) return { beginner: null, intermediate: null, expert: null, ...JSON.parse(raw) };
+  } catch {}
+  return { beginner: null, intermediate: null, expert: null };
+}
+function saveBest(b: Record<Diff, number | null>) {
+  try { localStorage.setItem(BEST_KEY, JSON.stringify(b)); } catch {}
+}
+
+function emptyGrid(rows: number, cols: number): Cell[][] {
+  return Array.from({ length: rows }, () =>
+    Array.from({ length: cols }, () => ({
+      isMine: false, adjacent: 0, revealed: false, flagged: false,
     }))
   );
 }
 
-function placeMines(grid: Cell[][], avoidR: number, avoidC: number): Cell[][] {
+function placeMines(grid: Cell[][], avoidR: number, avoidC: number, mines: number): Cell[][] {
+  const rows = grid.length, cols = grid[0].length;
   const g = grid.map((row) => row.map((c) => ({ ...c })));
   const safe = new Set<string>();
   for (let dr = -1; dr <= 1; dr++)
     for (let dc = -1; dc <= 1; dc++) safe.add(`${avoidR + dr},${avoidC + dc}`);
 
   let placed = 0;
-  while (placed < MINES) {
-    const r = Math.floor(Math.random() * ROWS);
-    const c = Math.floor(Math.random() * COLS);
+  while (placed < mines) {
+    const r = Math.floor(Math.random() * rows);
+    const c = Math.floor(Math.random() * cols);
     if (safe.has(`${r},${c}`) || g[r][c].isMine) continue;
     g[r][c].isMine = true;
     placed++;
   }
-  for (let r = 0; r < ROWS; r++)
-    for (let c = 0; c < COLS; c++) {
+  for (let r = 0; r < rows; r++)
+    for (let c = 0; c < cols; c++) {
       if (g[r][c].isMine) continue;
       let n = 0;
       for (let dr = -1; dr <= 1; dr++)
         for (let dc = -1; dc <= 1; dc++) {
           const nr = r + dr, nc = c + dc;
-          if (nr < 0 || nr >= ROWS || nc < 0 || nc >= COLS) continue;
+          if (nr < 0 || nr >= rows || nc < 0 || nc >= cols) continue;
           if (g[nr][nc].isMine) n++;
         }
       g[r][c].adjacent = n;
@@ -55,11 +69,12 @@ function placeMines(grid: Cell[][], avoidR: number, avoidC: number): Cell[][] {
 }
 
 function reveal(grid: Cell[][], r: number, c: number): Cell[][] {
+  const rows = grid.length, cols = grid[0].length;
   const g = grid.map((row) => row.map((c) => ({ ...c })));
   const stack: [number, number][] = [[r, c]];
   while (stack.length) {
     const [rr, cc] = stack.pop()!;
-    if (rr < 0 || rr >= ROWS || cc < 0 || cc >= COLS) continue;
+    if (rr < 0 || rr >= rows || cc < 0 || cc >= cols) continue;
     const cell = g[rr][cc];
     if (cell.revealed || cell.flagged) continue;
     cell.revealed = true;
@@ -80,13 +95,25 @@ function checkWin(g: Cell[][]): boolean {
 }
 
 export default function Minesweeper() {
-  const [grid, setGrid] = useState<Cell[][]>(emptyGrid);
+  const [diff, setDiff] = useState<Diff>("beginner");
+  const cfg = LEVELS[diff];
+  const [grid, setGrid] = useState<Cell[][]>(() => emptyGrid(cfg.rows, cfg.cols));
   const [started, setStarted] = useState(false);
   const [state, setState] = useState<"playing" | "won" | "lost">("playing");
   const [startTime, setStartTime] = useState<number | null>(null);
   const [elapsed, setElapsed] = useState(0);
+  const [pressing, setPressing] = useState(false);
+  const [bests, setBests] = useState<Record<Diff, number | null>>(loadBest);
 
   const flags = useMemo(() => grid.flat().filter((c) => c.flagged).length, [grid]);
+
+  useEffect(() => {
+    setGrid(emptyGrid(cfg.rows, cfg.cols));
+    setStarted(false);
+    setState("playing");
+    setStartTime(null);
+    setElapsed(0);
+  }, [diff, cfg.rows, cfg.cols]);
 
   useEffect(() => {
     if (state !== "playing" || !startTime) return;
@@ -101,7 +128,7 @@ export default function Minesweeper() {
     if (grid[r][c].flagged || grid[r][c].revealed) return;
     let g = grid;
     if (!started) {
-      g = placeMines(g, r, c);
+      g = placeMines(g, r, c, cfg.mines);
       setStarted(true);
       setStartTime(Date.now());
     }
@@ -113,7 +140,20 @@ export default function Minesweeper() {
     }
     const next = reveal(g, r, c);
     setGrid(next);
-    if (checkWin(next)) setState("won");
+    if (checkWin(next)) {
+      setState("won");
+      const finalElapsed = Math.floor((Date.now() - (startTime ?? Date.now())) / 1000);
+      setElapsed(finalElapsed);
+      setBests((b) => {
+        const prev = b[diff];
+        if (prev === null || finalElapsed < prev) {
+          const nb = { ...b, [diff]: finalElapsed };
+          saveBest(nb);
+          return nb;
+        }
+        return b;
+      });
+    }
   };
 
   const onRight = (e: React.MouseEvent, r: number, c: number) => {
@@ -126,45 +166,78 @@ export default function Minesweeper() {
   };
 
   const reset = () => {
-    setGrid(emptyGrid());
+    setGrid(emptyGrid(cfg.rows, cfg.cols));
     setStarted(false);
     setState("playing");
     setStartTime(null);
     setElapsed(0);
   };
 
-  const face = state === "won" ? "B)" : state === "lost" ? "X(" : ":)";
-  const remaining = Math.max(-99, MINES - flags);
+  const face = state === "won" ? "😎" : state === "lost" ? "😵" : pressing ? "😮" : "🙂";
+  const remaining = Math.max(-99, cfg.mines - flags);
+  const boardW = cfg.cols * CELL_SIZE;
+  const best = bests[diff];
 
   return (
     <div
-      className="flex flex-col items-center p-5 h-full"
+      className="flex flex-col items-center p-4 h-full overflow-auto win-scroll"
       style={{ background: "hsl(var(--cream-soft))", fontFamily: "var(--font-win98)" }}
     >
+      {/* Difficulty selector */}
+      <div className="flex items-center gap-1 mb-3">
+        {(Object.keys(LEVELS) as Diff[]).map((d) => (
+          <button
+            key={d}
+            onClick={() => setDiff(d)}
+            className="px-2.5 py-1"
+            style={{
+              background: diff === d ? "hsl(var(--ink))" : "hsl(var(--cream))",
+              color: diff === d ? "hsl(var(--cream))" : "hsl(var(--ink))",
+              border: "2px solid hsl(var(--bevel-light))",
+              borderRightColor: "hsl(var(--bevel-dark))",
+              borderBottomColor: "hsl(var(--bevel-dark))",
+              fontFamily: "var(--font-win98)",
+              fontSize: "11px",
+              letterSpacing: "0.06em",
+            }}
+          >
+            {LEVELS[d].label}
+            <span style={{ opacity: 0.7, marginLeft: 6, fontSize: "10px" }}>
+              {LEVELS[d].rows}×{LEVELS[d].cols} · {LEVELS[d].mines}💣
+            </span>
+          </button>
+        ))}
+      </div>
+
       {/* HUD */}
       <div
-        className="flex items-center justify-between mb-3 px-2 py-2"
+        className="flex items-center justify-between mb-3 px-3 py-2"
         style={{
           background: "hsl(var(--cream))",
           border: "2px solid hsl(var(--bevel-light))",
           borderRightColor: "hsl(var(--bevel-dark))",
           borderBottomColor: "hsl(var(--bevel-dark))",
-          width: COLS * CELL_SIZE + 8,
+          width: boardW + 12,
+          minWidth: 260,
         }}
       >
         <LcdBox value={remaining} />
         <button
           onClick={reset}
-          className="w-9 h-9 flex items-center justify-center"
+          onMouseDown={() => setPressing(true)}
+          onMouseUp={() => setPressing(false)}
+          onMouseLeave={() => setPressing(false)}
+          className="flex items-center justify-center"
           style={{
+            width: 40,
+            height: 40,
             background: "hsl(var(--cream))",
             border: "2px solid hsl(var(--bevel-light))",
             borderRightColor: "hsl(var(--bevel-dark))",
             borderBottomColor: "hsl(var(--bevel-dark))",
-            fontFamily: "monospace",
-            fontSize: "14px",
-            fontWeight: 700,
-            color: "hsl(var(--ink))",
+            fontSize: "20px",
+            lineHeight: 1,
+            cursor: "pointer",
           }}
         >
           {face}
@@ -172,12 +245,28 @@ export default function Minesweeper() {
         <LcdBox value={elapsed} />
       </div>
 
+      {/* Best time banner */}
+      <div
+        className="mb-2"
+        style={{
+          fontSize: "11px",
+          color: "hsl(var(--ink-soft))",
+          letterSpacing: "0.1em",
+          textTransform: "uppercase",
+        }}
+      >
+        Best · {best === null ? "—" : `${best}s`}
+        {state === "won" && best === elapsed && elapsed > 0 && (
+          <span style={{ color: "#C11", marginLeft: 8, fontWeight: 600 }}>NEW RECORD</span>
+        )}
+      </div>
+
       {/* Grid */}
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: `repeat(${COLS}, ${CELL_SIZE}px)`,
-          gridTemplateRows: `repeat(${ROWS}, ${CELL_SIZE}px)`,
+          gridTemplateColumns: `repeat(${cfg.cols}, ${CELL_SIZE}px)`,
+          gridTemplateRows: `repeat(${cfg.rows}, ${CELL_SIZE}px)`,
           border: "3px solid hsl(var(--bevel-dark))",
           borderRightColor: "hsl(var(--bevel-light))",
           borderBottomColor: "hsl(var(--bevel-light))",
@@ -199,7 +288,7 @@ export default function Minesweeper() {
                   padding: 0,
                   background: hitMine ? "#D03030" : "hsl(var(--cream))",
                   border: isRevealed
-                    ? "1px solid hsl(var(--bevel-dark) / 0.4)"
+                    ? "1px solid hsl(var(--bevel-dark) / 0.35)"
                     : "2px solid hsl(var(--bevel-light))",
                   borderRightColor: isRevealed ? undefined : "hsl(var(--bevel-dark))",
                   borderBottomColor: isRevealed ? undefined : "hsl(var(--bevel-dark))",
@@ -209,17 +298,18 @@ export default function Minesweeper() {
                   color: NUM_COLORS[cell.adjacent] || "hsl(var(--ink))",
                   lineHeight: 1,
                   cursor: state === "playing" ? "pointer" : "default",
+                  transition: "background 120ms",
                 }}
               >
-                {isRevealed
-                  ? cell.isMine
-                    ? "●"
-                    : cell.adjacent > 0
-                    ? cell.adjacent
-                    : ""
-                  : cell.flagged
-                  ? <span style={{ color: "#C11" }}>⚑</span>
-                  : ""}
+                {isRevealed ? (
+                  cell.isMine ? (
+                    <span style={{ fontSize: "13px", animation: "mineBoom 300ms ease-out" }}>💣</span>
+                  ) : cell.adjacent > 0 ? (
+                    <span style={{ animation: "numPop 180ms ease-out" }}>{cell.adjacent}</span>
+                  ) : ""
+                ) : cell.flagged ? (
+                  <span style={{ color: "#C11", animation: "flagPop 160ms ease-out" }}>⚑</span>
+                ) : ""}
               </button>
             );
           })
@@ -228,10 +318,27 @@ export default function Minesweeper() {
 
       <div
         className="mt-3 text-center"
-        style={{ fontFamily: "var(--font-win98)", fontSize: "12px", color: "hsl(var(--ink-soft))" }}
+        style={{ fontFamily: "var(--font-win98)", fontSize: "11px", color: "hsl(var(--ink-soft))" }}
       >
         Left-click to reveal · Right-click to flag
       </div>
+
+      <style>{`
+        @keyframes numPop {
+          0% { transform: scale(0.2); opacity: 0; }
+          60% { transform: scale(1.25); opacity: 1; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes flagPop {
+          0% { transform: scale(0) rotate(-30deg); }
+          100% { transform: scale(1) rotate(0); }
+        }
+        @keyframes mineBoom {
+          0% { transform: scale(0.4); }
+          50% { transform: scale(1.4); }
+          100% { transform: scale(1); }
+        }
+      `}</style>
     </div>
   );
 }
@@ -247,13 +354,14 @@ function LcdBox({ value }: { value: number }) {
         background: "#000",
         color: "#F22",
         fontFamily: "monospace",
-        fontSize: "20px",
+        fontSize: "22px",
         fontWeight: 700,
-        padding: "1px 6px",
-        minWidth: "54px",
+        padding: "1px 8px",
+        minWidth: "62px",
         textAlign: "center",
         border: "1px solid hsl(var(--bevel-dark))",
         letterSpacing: "2px",
+        textShadow: "0 0 4px rgba(255,40,40,0.6)",
       }}
     >
       {display}
