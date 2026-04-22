@@ -33,34 +33,7 @@ function askSimonDevApi(): Plugin {
           const mod = await server.ssrLoadModule(
             path.resolve(__dirname, "api/ask.ts")
           );
-          const handler = mod.default as (req: Request) => Promise<Response>;
-
-          const chunks: Buffer[] = [];
-          for await (const chunk of req) chunks.push(chunk as Buffer);
-          const rawBody = chunks.length
-            ? Buffer.concat(chunks).toString("utf8")
-            : undefined;
-
-          const url = `http://localhost${req.url ?? "/api/ask"}`;
-          const request = new Request(url, {
-            method: req.method,
-            headers: rawBody ? { "content-type": "application/json" } : {},
-            body: rawBody,
-          });
-
-          const response = await handler(request);
-          res.statusCode = response.status;
-          response.headers.forEach((v, k) => res.setHeader(k, v));
-
-          if (response.body) {
-            const reader = response.body.getReader();
-            while (true) {
-              const { value, done } = await reader.read();
-              if (done) break;
-              if (value) res.write(Buffer.from(value));
-            }
-          }
-          res.end();
+          await mod.default(req, res);
         } catch (err) {
           console.error("[ask-simon-dev-api]", err);
           if (!res.headersSent) res.statusCode = 500;
