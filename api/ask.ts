@@ -1,21 +1,10 @@
-/**
- * Vercel serverless function — Ask Simon backend.
- *
- * Pipeline:
- *   1. Receive { question, history } from the browser.
- *   2. Embed the question with OpenAI text-embedding-3-small.
- *   3. Cosine-search in-memory against public/ask-simon.json (top-k).
- *   4. Build a grounded system prompt + context block.
- *   5. Stream GPT-4o-mini's answer back as a plain text stream.
- *
- * Env vars required (Vercel dashboard → Settings → Environment Variables):
- *   OPENAI_API_KEY  — used for both embeddings and chat
- */
-
+import { createRequire } from "node:module";
 import OpenAI from "openai";
-import kbData from "../public/ask-simon.json";
 
 export const config = { runtime: "nodejs" };
+
+const require = createRequire(import.meta.url);
+const kbData = require("../public/ask-simon.json");
 
 type Chunk = {
   id: string;
