@@ -12,9 +12,8 @@
  *   OPENAI_API_KEY  — used for both embeddings and chat
  */
 
-import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
 import OpenAI from "openai";
+import kbData from "../public/ask-simon.json";
 
 export const config = { runtime: "nodejs" };
 
@@ -39,17 +38,7 @@ const EMBED_MODEL = "text-embedding-3-small";
 const CHAT_MODEL = "gpt-4o-mini";
 const MAX_TOKENS = 600;
 
-/* ---------- KB loading (cached across warm invocations) ---------- */
-let kbPromise: Promise<KnowledgeBase> | null = null;
-async function loadKB(): Promise<KnowledgeBase> {
-  if (kbPromise) return kbPromise;
-  kbPromise = (async () => {
-    const path = resolve(process.cwd(), "public/ask-simon.json");
-    const raw = await readFile(path, "utf8");
-    return JSON.parse(raw) as KnowledgeBase;
-  })();
-  return kbPromise;
-}
+const kb = kbData as KnowledgeBase;
 
 /* ---------- Cosine similarity ---------- */
 function cosine(a: number[], b: number[]): number {
@@ -109,7 +98,6 @@ export default async function handler(req: Request): Promise<Response> {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
   // 1. Embed query + retrieve top-k
-  const kb = await loadKB();
   const embedResp = await openai.embeddings.create({
     model: EMBED_MODEL,
     input: question,

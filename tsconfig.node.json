@@ -17,6 +17,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
     "types": ["node"]
   },
   "include": ["vite.config.ts", "scripts/**/*.ts", "api/**/*.ts"]
