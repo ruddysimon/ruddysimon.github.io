@@ -22,7 +22,7 @@ export default function ChatbotApp() {
       id: 1,
       role: "assistant",
       content:
-        "Hi, I'm Simon — a little assistant with everything about Ruddy. Ask me about his projects, experience, or how to reach him.",
+        "Hi, I'm Ruddy. I can help you explore my work, background, and the best way to get in touch.",
     },
   ]);
   const [input, setInput] = useState("");
@@ -102,32 +102,34 @@ export default function ChatbotApp() {
 
   return (
     <div className="flex flex-col h-full" style={{ background: "hsl(var(--cream-soft))" }}>
-      {/* Header */}
+      {/* A quiet status rail keeps the window title as the single Simon label. */}
       <div
-        className="px-4 py-2.5 flex items-center justify-between"
+        className="px-4 py-2 flex items-center justify-between"
         style={{
           background: "hsl(var(--cream))",
           borderBottom: "1px solid hsl(var(--bevel-dark))",
           fontFamily: "var(--font-win98)",
         }}
       >
-        <div>
-          <div style={{ fontSize: "13px", fontWeight: 500, color: "hsl(var(--ink))" }}>
-            Simon
-          </div>
-          <div style={{ fontSize: "10px", color: "hsl(var(--ink-soft))" }}>
-            Grounded on Ruddy's portfolio · GPT-4o-mini
-          </div>
-        </div>
-        <div className="flex items-center gap-1.5">
+        <span
+          style={{
+            fontSize: "10px",
+            fontWeight: 700,
+            letterSpacing: "0.12em",
+            color: "hsl(var(--ink-soft))",
+          }}
+        >
+          PORTFOLIO GUIDE
+        </span>
+        <div className="flex items-center gap-2">
           <span
-            className="w-1.5 h-1.5 rounded-full"
+            className="w-2 h-2 is-round"
             style={{
               background: streaming ? "#E33" : "#2FA82F",
-              boxShadow: `0 0 6px ${streaming ? "#E33" : "#2FA82F"}`,
+              boxShadow: `0 0 0 3px ${streaming ? "rgb(227 51 51 / 0.12)" : "rgb(47 168 47 / 0.12)"}`,
             }}
           />
-          <span style={{ fontSize: "10px", color: "hsl(var(--ink-soft))" }}>
+          <span style={{ fontSize: "10px", fontWeight: 600, color: "hsl(var(--ink-soft))" }}>
             {streaming ? "typing" : "online"}
           </span>
         </div>
@@ -146,18 +148,19 @@ export default function ChatbotApp() {
 
       {/* Suggestion chips */}
       {firstTurn && !streaming && (
-        <div className="px-4 pb-2 flex flex-wrap gap-1.5">
+        <div className="px-4 pb-3 flex flex-wrap gap-1.5">
           {SUGGESTIONS.map((s) => (
             <button
               key={s}
               onClick={() => send(s)}
-              className="px-2.5 py-1"
+              className="px-2.5 py-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[hsl(var(--accent))]"
               style={{
                 fontFamily: "var(--font-win98)",
                 fontSize: "11px",
                 background: "hsl(var(--cream))",
                 color: "hsl(var(--ink))",
                 border: "1px solid hsl(var(--ink) / 0.25)",
+                boxShadow: "2px 2px 0 hsl(var(--ink) / 0.12)",
                 cursor: "pointer",
               }}
             >
@@ -183,8 +186,8 @@ export default function ChatbotApp() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           disabled={streaming}
-          placeholder={streaming ? "Simon is thinking…" : "Ask Simon about Ruddy…"}
-          className="flex-1 px-3 py-2 outline-none"
+          placeholder={streaming ? "Thinking…" : "Ask about Ruddy's work…"}
+          className="flex-1 px-3 py-2 outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[hsl(var(--accent))]"
           style={{
             fontFamily: "var(--font-win98)",
             fontSize: "13px",
@@ -199,7 +202,7 @@ export default function ChatbotApp() {
           <button
             type="button"
             onClick={stop}
-            className="flex items-center gap-1.5 px-3"
+            className="flex items-center gap-1.5 px-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[hsl(var(--accent))]"
             style={{
               fontFamily: "var(--font-win98)",
               fontSize: "12px",
@@ -218,7 +221,7 @@ export default function ChatbotApp() {
           <button
             type="submit"
             disabled={!input.trim()}
-            className="flex items-center gap-1.5 px-3 disabled:opacity-40"
+            className="flex items-center gap-1.5 px-3 disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[hsl(var(--accent))]"
             style={{
               fontFamily: "var(--font-win98)",
               fontSize: "12px",
@@ -241,10 +244,11 @@ export default function ChatbotApp() {
 
 function Bubble({ msg, showCursor }: { msg: Msg; showCursor: boolean }) {
   const isUser = msg.role === "user";
+  const isWelcome = msg.id === 1;
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div
-        className="max-w-[82%] px-3 py-2 leading-relaxed whitespace-pre-wrap"
+        className="max-w-[86%] px-3 py-2.5 leading-relaxed whitespace-pre-wrap"
         style={{
           background: isUser
             ? "hsl(var(--ink))"
@@ -255,12 +259,66 @@ function Bubble({ msg, showCursor }: { msg: Msg; showCursor: boolean }) {
           border: `2px solid ${isUser ? "hsl(var(--ink))" : "hsl(var(--bevel-light))"}`,
           borderRightColor: isUser ? "hsl(var(--ink))" : "hsl(var(--bevel-dark))",
           borderBottomColor: isUser ? "hsl(var(--ink))" : "hsl(var(--bevel-dark))",
+          boxShadow: isUser ? "2px 2px 0 hsl(var(--ink) / 0.18)" : "3px 3px 0 hsl(var(--ink) / 0.1)",
         }}
       >
-        {msg.content || (showCursor ? <Thinking /> : "")}
+        {isWelcome && (
+          <div
+            className="mb-2 flex items-center gap-2"
+            aria-hidden="true"
+            style={{ color: "hsl(var(--ink-soft))" }}
+          >
+            <span
+              className="block w-1.5 h-1.5 is-round"
+              style={{ background: "hsl(var(--accent))" }}
+            />
+            <span style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.12em" }}>
+              START HERE
+            </span>
+          </div>
+        )}
+        {msg.content ? <MessageText content={msg.content} /> : showCursor ? <Thinking /> : ""}
         {msg.content && showCursor && <BlinkCursor />}
       </div>
     </div>
+  );
+}
+
+const MARKDOWN_LINK = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+
+function MessageText({ content }: { content: string }) {
+  const parts = content.split(MARKDOWN_LINK);
+
+  return (
+    <>
+      {parts.map((part, index) => {
+        const position = index % 3;
+
+        if (position === 2) return null;
+        if (position === 1 && parts[index + 1]) {
+          return (
+            <a
+              key={`${part}-${index}`}
+              href={parts[index + 1]}
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                color: "inherit",
+                fontWeight: 700,
+                textDecoration: "underline",
+                textDecorationColor: "hsl(var(--accent))",
+                textDecorationThickness: "2px",
+                textUnderlineOffset: "2px",
+              }}
+            >
+              {part}
+            </a>
+          );
+        }
+
+        return <span key={`${part}-${index}`}>{part}</span>;
+      })}
+    </>
   );
 }
 
